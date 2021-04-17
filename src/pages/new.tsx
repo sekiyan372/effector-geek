@@ -5,7 +5,7 @@ const New: NextPage = () => {
   return(
     <>
       <Head title="エフェクターボード投稿" />
-      <div>
+      <div className="m-12">
         <h2>新規投稿</h2>
       </div>
     </>
