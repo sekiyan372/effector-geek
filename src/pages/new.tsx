@@ -1,5 +1,5 @@
 import { NextPage } from 'next'
-import Head from '../components/Head'
+import Head from '~/components/Head'
 
 const New: NextPage = () => {
   return(
