@@ -9,6 +9,11 @@ const Index: NextPage = () => {
         console.log(doc.data())
       })
     })
+    db().collection("articles").doc("Zzhm2BUjdD09Vcc2acd9").collection("effectors").get().then((query) => {
+      query.forEach((doc) => {
+        console.log(doc.data())
+      })
+    })
   }, [])
 
   return (
