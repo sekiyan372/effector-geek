@@ -11,7 +11,7 @@ const articleCard: VFC<Props> = (props) => {
   const article = useSelector(getArticleById(props.articleId))
 
   return (
-    <div>
+    <div className="p-2 m-2 w-80 border border-solid">
       <div>{article.artist}</div>
       <div>{article.band}</div>
     </div>

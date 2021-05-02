@@ -2,7 +2,7 @@ export type Article = {
   id: string
   image?: File
   artist: string
-  band: string
+  band?: string
   createdAt: Date
 }
 
