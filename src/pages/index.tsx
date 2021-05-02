@@ -1,24 +1,41 @@
 import { NextPage } from 'next'
 import { useEffect } from 'react'
-import { db } from '~/utils/firebase'
+import { useDispatch, useSelector } from 'react-redux'
+import { actions, getArticles } from '~/store'
+import { articleConverter } from '~/utils/converter'
+import { firestore } from '~/utils/firebase'
+import ArticleCard from '~/components/ArticleCard'
 
 const Index: NextPage = () => {
+  const dispatch = useDispatch()
+  const articles = useSelector(getArticles)
+
   useEffect(() => {
-    db().collection("articles").get().then((query) => {
-      query.forEach((doc) => {
-        console.log(doc.data())
+    firestore()
+      .collection("articles")
+      .withConverter(articleConverter)
+      .get()
+      .then(({docs, query}) => {
+        const articles = docs.map((doc) => doc.data())
+        dispatch(actions.updateArticles(articles))
       })
-    })
-    db().collection("articles").doc("Zzhm2BUjdD09Vcc2acd9").collection("effectors").get().then((query) => {
-      query.forEach((doc) => {
-        console.log(doc.data())
-      })
-    })
+    // firestore().collection("articles").doc("Zzhm2BUjdD09Vcc2acd9").collection("effectors").get().then((query) => {
+    //   query.forEach((doc) => {
+    //     console.log(doc.data())
+    //   })
+    // })
   }, [])
 
   return (
     <div className="m-12">
       <h1>新着ボード</h1>
+      <ul>
+        {articles.map((article) => (
+          <li key={article}>
+            <ArticleCard articleId={article} />
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
