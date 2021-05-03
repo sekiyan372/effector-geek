@@ -12,6 +12,7 @@ const articleCard: VFC<Props> = (props) => {
 
   return (
     <div className="p-2 m-2 w-80 border border-solid">
+      <img src={article.imageUrl} alt={`${article.artist}のエフェクターボード`} />
       <div>{article.artist}</div>
       <div>{article.band}</div>
     </div>

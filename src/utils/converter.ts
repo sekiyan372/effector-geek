@@ -19,7 +19,7 @@ export const articleConverter: firebase.default.firestore.FirestoreDataConverter
       imageUrl: data.imageUrl,
       artist: data.artist,
       band: data.band,
-      createdAt: data.createdAt,
+      createdAt: data.createdAt.toDate().toString(),
     }
   }
 }

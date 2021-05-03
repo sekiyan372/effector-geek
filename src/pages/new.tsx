@@ -22,20 +22,19 @@ const New: NextPage = () => {
     }
   })
 
-  // const submitArticle = (value: SubmitValues) => {
-  //   console.log(value)
-  // }
   const submitArticle = useCallback(async (value: FormValues) => {
-    const imageUrl = `effector_board/${value.image[0].name}`
-    // フォームのデータを firestore へ保存
+    // 画像をfirebase storageへ保存
+    const imagePath = `effector_board/${value.image[0].name}`
+    await storage().ref().child(imagePath).put(value.image[0])
+    // 保存した画像のURLを取得
+    const imageUrl = await storage().ref().child(imagePath).getDownloadURL()
+    // データをfirestoreへ保存
     await firestore().collection('articles').add({
       imageUrl: imageUrl,
       artist: value.artist,
       band: value.band,
       createdAt: firestore.FieldValue.serverTimestamp(),
     })
-    // 画像を firebase storage へ保存
-    await storage().ref().child(imageUrl).put(value.image)
     // トップページへ移動
     router.push('/')
   }, [])
