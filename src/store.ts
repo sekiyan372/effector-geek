@@ -51,4 +51,3 @@ export const getArticleById = (id: Article['id']) =>
     (state: RootState) => state.articles,
     (articles) => articles[id]
   )
-

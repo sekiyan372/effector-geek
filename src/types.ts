@@ -1,8 +1,8 @@
 export type Article = {
   id: string
-  image?: File
+  imageUrl: string
   artist: string
-  band?: string
+  band: string
   createdAt: Date
 }
 
