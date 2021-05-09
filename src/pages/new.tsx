@@ -8,7 +8,6 @@ import Heading from '~/components/Heading'
 import Label from '~/components/Label'
 import LinkIndex from '~/components/LinkIndex'
 import SuccessButton from '~/components/SuccessButton'
-import TextField from '~/components/TextField'
 import { firestore, storage } from '~/utils/firebase'
 
 type FormValues = {
@@ -21,7 +20,7 @@ const New: NextPage = () => {
   const router = useRouter()
   const [preview, setPreview] = useState<string>('/src/static/noimage.jpg')
 
-  const { register ,handleSubmit, control, formState: { errors }, setError } = useForm<FormValues>({
+  const { register ,handleSubmit, formState: { errors } } = useForm<FormValues>({
     defaultValues: {
       image: null,
       artist: '',
@@ -58,6 +57,7 @@ const New: NextPage = () => {
         <div className="m-12">
           <LinkIndex />
           <Heading>新規投稿</Heading>
+
           <form onSubmit={ handleSubmit(submitArticle) }>
             <div className="mb-5">
               <Label htmlFor="image">エフェクターボード</Label>
@@ -65,25 +65,55 @@ const New: NextPage = () => {
                 type="file"
                 className=""
                 id="image"
-                {...register('image')}
+                {...register('image', { required: true })}
                 onChange={ handleChangeFile }
               />
+              {errors.image && (
+                <div role="alert" className="text-sm text-red-500">
+                  入力してください
+                </div>
+              )}
               <Image src={ preview } alt="プレビュー画像" height={300} width={500} className="mb-5" />
             </div>
-            <div>
-              <Label htmlFor="artist">アーティスト</Label>
-              <TextField
+
+            <div className="mb-5">
+              <Label htmlFor="artist">アーティスト (30文字以内)</Label>
+              <input
+                type="text"
+                className="border h-10 w-4/5"
                 id="artist"
-                {...register('artist')}
+                {...register('artist', {
+                  required: true,
+                  maxLength: 30,
+                })}
               />
+              {errors.artist && errors.artist.type === 'required' && (
+                <div role="alert" className="text-sm text-red-500">
+                  入力してください
+                </div>
+              )}
+              {errors.artist && errors.artist.type === 'maxLength' && (
+                <div role="alert" className="text-sm text-red-500">
+                  30文字以内で入力してください
+                </div>
+              )}
             </div>
-            <div>
-              <Label htmlFor="band">バンド名</Label>
-              <TextField
+
+            <div className="mb-5">
+              <Label htmlFor="band">バンド名 (30文字以内)</Label>
+              <input
+                type="text"
+                className="mb-5 border h-10 w-4/5"
                 id="band"
-                {...register('band')}
+                {...register('band', { maxLength: 30 })}
               />
+              {errors.band && errors.band.type === 'maxLength' && (
+                <div role="alert" className="text-sm text-red-500">
+                  30文字以内で入力してください
+                </div>
+              )}
             </div>
+
             <SuccessButton>投稿</SuccessButton>
           </form>
         </div>
