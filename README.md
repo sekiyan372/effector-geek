@@ -2,6 +2,7 @@
 
 ---
 Next.js + Firebase
+
 ---
 
 ## プロボーとは？
