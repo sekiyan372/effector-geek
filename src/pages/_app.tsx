@@ -11,7 +11,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
   return(
     <Provider store={store}>
       <Header />
-      <main>
+      <main className="md:w-4/5 md:m-auto">
         <Component {...pageProps} />
       </main>
       <Footer />

@@ -1,10 +1,11 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Error from 'next/error'
+import Heading from '~/components/Heading'
+import Head from '~/components/Head'
+import LinkIndex from '~/components/LinkIndex'
 import { articleConverter } from '~/utils/converter'
 import { firestore } from '~/utils/firebase'
 import { Article } from '~/types'
-import Head from '~/components/Head'
-import Link from 'next/link'
 
 type Props = {
   article?: Article
@@ -16,17 +17,20 @@ const Page: NextPage<Props> = (props) => {
 
   return (
     <>
-      <Head title="エフェクターボード" />
+      <Head title={`${ props.article.artist }のエフェクターボード`} />
       <section className="m-12">
-        <div>
-          { props.article.artist } from { props.article.band }
-        </div>
+        <LinkIndex />
+        <Heading>
+          { props.article.artist }
+          <span className="ml-8">from { props.article.band }</span>
+        </Heading>
         <div className="p-2 m-2">
-          <img src={ props.article.imageUrl } alt={`${ props.article.artist }のエフェクターボード`} />
+          <img
+            className="w-full"
+            src={ props.article.imageUrl }
+            alt={`${ props.article.artist }のエフェクターボード`}
+          />
         </div>
-        <Link href="/">
-          <button className="border">戻る</button>
-        </Link>
       </section>
     </>
   )
