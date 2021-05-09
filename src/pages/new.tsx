@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/dist/client/router'
 import { useForm } from 'react-hook-form'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import Head from '~/components/Head'
 import { firestore, storage } from '~/utils/firebase'
 
@@ -13,6 +13,7 @@ type FormValues = {
 
 const New: NextPage = () => {
   const router = useRouter()
+  const [preview, setPreview] = useState<string>('')
 
   const { register ,handleSubmit, formState: { errors }, setError } = useForm<FormValues>({
     defaultValues: {
@@ -39,6 +40,11 @@ const New: NextPage = () => {
     router.push('/')
   }, [])
 
+  const handleChangeFile = (event) => {
+    const { files } = event.target
+    setPreview(URL.createObjectURL(files[0]))
+  }
+
   return(
     <>
       <Head title="エフェクターボード投稿" />
@@ -53,7 +59,9 @@ const New: NextPage = () => {
                 className=""
                 id="image"
                 {...register('image')}
+                onChange={ handleChangeFile }
               />
+            <img src={ preview } alt="プレビュー画像" className="w-80" />
             </div>
             <div>
               <label htmlFor="artist">アーティスト</label>

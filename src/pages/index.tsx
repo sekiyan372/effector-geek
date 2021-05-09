@@ -17,7 +17,6 @@ const Index: NextPage = () => {
       .get()
       .then(({docs, query}) => {
         const articles = docs.map((doc) => doc.data())
-        console.log(articles[0].createdAt)
         dispatch(actions.updateArticles(articles))
       })
   }, [])
