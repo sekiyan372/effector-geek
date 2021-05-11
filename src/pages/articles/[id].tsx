@@ -4,6 +4,7 @@ import Heading from '~/components/Heading'
 import Head from '~/components/Head'
 import LinkIndex from '~/components/LinkIndex'
 import { articleConverter } from '~/utils/converter'
+import { env } from '~/utils/env'
 import { firestore } from '~/utils/firebase'
 import { Article } from '~/types'
 
@@ -47,7 +48,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   if (typeof id !== 'string') {
     return {
       props: { errorCode: 404 },
-      revalidate: 1,
+      revalidate: env.IS_DEV ? 30 : 1,
     }
   }
 
@@ -55,7 +56,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
 
   return {
     props: { article: doc.data() },
-    revalidate: 1,
+    revalidate: env.IS_DEV ? 30 : 1,
   }
 }
 
