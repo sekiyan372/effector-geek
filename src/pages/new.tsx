@@ -1,5 +1,4 @@
 import { NextPage } from 'next'
-import Image from 'next/image'
 import { useRouter } from 'next/dist/client/router'
 import { useForm } from 'react-hook-form'
 import React, { useCallback, useState } from 'react'
@@ -18,9 +17,9 @@ type FormValues = {
 
 const New: NextPage = () => {
   const router = useRouter()
-  const [preview, setPreview] = useState<string>('/src/static/noimage.jpg')
+  const [preview, setPreview] = useState<string>('')
 
-  const { register ,handleSubmit, formState: { errors } } = useForm<FormValues>({
+  const { register ,handleSubmit, formState: { errors }, setError } = useForm<FormValues>({
     defaultValues: {
       image: null,
       artist: '',
@@ -47,6 +46,15 @@ const New: NextPage = () => {
 
   const handleChangeFile = (event) => {
     const { files } = event.target
+
+    if(files[0].size > 10485760) {
+      setError('image', {
+        type: 'manual',
+        message: '10MB以下のファイルをアップロードしてください',
+      })
+      return
+    }
+
     setPreview(URL.createObjectURL(files[0]))
   }
 
@@ -73,7 +81,7 @@ const New: NextPage = () => {
                   入力してください
                 </div>
               )}
-              <Image src={ preview } alt="プレビュー画像" height={300} width={500} className="mb-5" />
+              <img src={ preview } alt="プレビュー画像" className="mb-5" />
             </div>
 
             <div className="mb-5">
