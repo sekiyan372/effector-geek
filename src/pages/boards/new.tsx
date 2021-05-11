@@ -64,7 +64,7 @@ const NewBoard: NextPage = () => {
       <section>
         <div className="m-12">
           <LinkIndex />
-          <Heading>新規投稿</Heading>
+          <Heading>エフェクターボード投稿</Heading>
 
           <form onSubmit={ handleSubmit(submitArticle) }>
             <div className="mb-5">
@@ -88,7 +88,7 @@ const NewBoard: NextPage = () => {
               <Label htmlFor="artist">アーティスト (30文字以内)</Label>
               <input
                 type="text"
-                className="border h-10 w-4/5"
+                className="border h-10 w-full"
                 id="artist"
                 {...register('artist', {
                   required: true,
@@ -111,7 +111,7 @@ const NewBoard: NextPage = () => {
               <Label htmlFor="band">バンド名 (30文字以内)</Label>
               <input
                 type="text"
-                className="mb-5 border h-10 w-4/5"
+                className="mb-5 border h-10 w-full"
                 id="band"
                 {...register('band', { maxLength: 30 })}
               />

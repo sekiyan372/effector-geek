@@ -25,7 +25,7 @@ const Index: NextPage = () => {
   return (
     <div className="m-12">
       <Heading>エフェクターボード一覧</Heading>
-      <ul className="m-5 flex flex-wrap">
+      <ul className="m-3 flex flex-wrap">
         {articles.map((article) => (
           <li key={ article }>
             <ArticleCard articleId={ article } />
