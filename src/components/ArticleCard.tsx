@@ -9,12 +9,12 @@ type Props = {
   articleId: Article['id']
 }
 
-const articleCard: VFC<Props> = (props) => {
+const ArticleCard: VFC<Props> = (props) => {
   const article = useSelector(getArticleById(props.articleId))
 
   return (
-    <Link href={`/articles/${article.id}`}>
-      <div className="p-2 m-2 w-80 border-2 border-solid border-green-500 rounded cursor-pointer">
+    <Link href={`/boards/${article.id}`}>
+      <div className="p-2 m-2 w-84 border-2 border-solid border-green-500 rounded cursor-pointer">
         <img src={ article.imageUrl } alt={`${ article.artist }のエフェクターボード`} />
         <div className="m-3 text-center border-b border-green-500">
           { article.artist } ({ article.band })
@@ -27,4 +27,4 @@ const articleCard: VFC<Props> = (props) => {
   )
 }
 
-export default articleCard
+export default ArticleCard
