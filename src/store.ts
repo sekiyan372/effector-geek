@@ -27,6 +27,18 @@ const slice = createSlice({
         ),
       },
     }),
+    updateEffectors: (state, action: PayloadAction<State['effectors'][string][]>) => ({
+      ...state,
+      effectors: {
+        ...action.payload.reduce(
+          (prev, current) => ({
+            ...prev,
+            [current.id]: current,
+          }),
+          {}
+        ),
+      },
+    }),
   },
 })
 
@@ -41,7 +53,7 @@ store.subscribe(() =>
 
 type RootState = ReturnType<typeof store.getState>
 
-export const getArticles = createSelector(
+export const getArticleIds = createSelector(
   (state: RootState) => state.articles,
   (articles) => Object.keys(articles),
 )
@@ -50,4 +62,15 @@ export const getArticleById = (id: Article['id']) =>
   createSelector<RootState, RootState['articles'], Article | undefined >(
     (state: RootState) => state.articles,
     (articles) => articles[id]
+  )
+
+export const getEffectorIds = createSelector(
+  (state: RootState) => state.effectors,
+  (effectors) => Object.keys(effectors),
+)
+
+export const getEffectorById = (id: Effector['id']) =>
+  createSelector<RootState, RootState['effectors'], Effector | undefined >(
+    (state: RootState) => state.effectors,
+    (effectors) => effectors[id]
   )

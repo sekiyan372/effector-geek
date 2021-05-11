@@ -9,8 +9,10 @@ import LinkIndex from '~/components/LinkIndex'
 import SuccessButton from '~/components/SuccessButton'
 import { firestore, storage } from '~/utils/firebase'
 
+const noImage = require('../../../public/noimage.jpg')
+
 type FormValues = {
-  image: File,
+  image: File[],
   name: string,
   brand: string,
   type: string,
@@ -18,7 +20,7 @@ type FormValues = {
 
 const NewEffector: NextPage = () => {
   const router = useRouter()
-  const [preview, setPreview] = useState<string>('')
+  const [preview, setPreview] = useState<string>(noImage)
 
   const { register ,handleSubmit, formState: { errors }, setError } = useForm<FormValues>({
     defaultValues: {
@@ -30,11 +32,14 @@ const NewEffector: NextPage = () => {
   })
 
   const submitArticle = useCallback(async (value: FormValues) => {
-    // 画像をfirebase storageへ保存
-    const imagePath = `effector/${value.image[0].name}`
-    await storage().ref().child(imagePath).put(value.image[0])
-    // 保存した画像のURLを取得
-    const imageUrl = await storage().ref().child(imagePath).getDownloadURL()
+    let imageUrl = ''
+    if(value.image.length !== 0) {
+      // 画像をfirebase storageへ保存
+      const imagePath = `effector/${value.image[0].name}`
+      await storage().ref().child(imagePath).put(value.image[0])
+      // 保存した画像のURLを取得
+      imageUrl = await storage().ref().child(imagePath).getDownloadURL()
+    }
     // データをfirestoreへ保存
     await firestore().collection('effectors').add({
       imageUrl: imageUrl,
@@ -108,7 +113,7 @@ const NewEffector: NextPage = () => {
               <Label htmlFor="name">エフェクター名 (50文字以内)</Label>
               <input
                 type="text"
-                className="mb-5 border h-10 w-full"
+                className="border h-10 w-full"
                 id="band"
                 {...register('name', {
                   required: true,

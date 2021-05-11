@@ -9,15 +9,17 @@ import LinkIndex from '~/components/LinkIndex'
 import SuccessButton from '~/components/SuccessButton'
 import { firestore, storage } from '~/utils/firebase'
 
+const noImage = require('../../../public/noimage.jpg')
+
 type FormValues = {
-  image: File,
+  image: File[],
   artist: string,
   band: string,
 }
 
 const NewBoard: NextPage = () => {
   const router = useRouter()
-  const [preview, setPreview] = useState<string>('')
+  const [preview, setPreview] = useState<string>(noImage)
 
   const { register ,handleSubmit, formState: { errors }, setError } = useForm<FormValues>({
     defaultValues: {

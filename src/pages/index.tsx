@@ -2,14 +2,17 @@ import { NextPage } from 'next'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ArticleCard from '~/components/ArticleCard'
+import EffectorCard from '~/components/EffectorCard'
+import Head from '~/components/Head'
 import Heading from '~/components/Heading'
-import { actions, getArticles } from '~/store'
-import { articleConverter } from '~/utils/converter'
+import { actions, getArticleIds, getEffectorIds } from '~/store'
+import { articleConverter, effectorConverter } from '~/utils/converter'
 import { firestore } from '~/utils/firebase'
 
 const Index: NextPage = () => {
   const dispatch = useDispatch()
-  const articles = useSelector(getArticles)
+  const articleIds = useSelector(getArticleIds)
+  const effectorIds = useSelector(getEffectorIds)
 
   useEffect(() => {
     firestore()
@@ -20,19 +23,44 @@ const Index: NextPage = () => {
         const articles = docs.map((doc) => doc.data())
         dispatch(actions.updateArticles(articles))
       })
+
+    firestore()
+      .collection("effectors")
+      .withConverter(effectorConverter)
+      .get()
+      .then(({ docs, query }) => {
+        const effectors = docs.map((doc) => doc.data())
+        dispatch(actions.updateEffectors(effectors))
+      })
   }, [])
 
   return (
-    <div className="m-12">
-      <Heading>エフェクターボード一覧</Heading>
-      <ul className="m-3 flex flex-wrap">
-        {articles.map((article) => (
-          <li key={ article }>
-            <ArticleCard articleId={ article } />
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <Head title="トップページ" />
+      <section>
+        <div className="m-12">
+          <Heading>エフェクターボード一覧</Heading>
+          <ul className="m-3 flex flex-wrap">
+            {articleIds.map((articleId) => (
+              <li key={ articleId }>
+                <ArticleCard articleId={ articleId } />
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="m-12">
+          <Heading>登録エフェクター一覧</Heading>
+          <ul className="m-3 flex flex-wrap">
+            {effectorIds.map((effectorId) => (
+              <li key={ effectorId }>
+                <EffectorCard effectorId={ effectorId } />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    </>
   )
 }
 

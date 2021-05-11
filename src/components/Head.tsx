@@ -5,11 +5,11 @@ type Props = {
   title?: string
 }
 
-const BASE_TITLE = 'プロのエフェクターボード紹介サイト'
-const DESCRIPTION = 'プロのエフェクターボードをまとめて紹介するサイトです。エフェクターで検索や絞り込みもできます。'
+const BASE_TITLE = 'Effector Geek'
+const DESCRIPTION = 'エフェクター好きによるエフェクター好きのためのエフェクター情報共有サイトです。'
 
 const Head: FC<Props> = (props) => {
-  const title = props.title ? `${props.title} - ${BASE_TITLE}` : BASE_TITLE
+  const title = props.title ? `${props.title} | ${BASE_TITLE}` : BASE_TITLE
 
   return (
     <NextHead>

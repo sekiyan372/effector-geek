@@ -8,6 +8,7 @@ export type Article = {
 
 export type Effector = {
   id: string
+  imageUrl: string
   name: string
   brand: string
   type: string
