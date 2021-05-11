@@ -1,9 +1,6 @@
-# ProBoar
+# ProBoar for Next.js
 
----
-Next.js + Firebase
-
----
+**Next.js + Tailwind CSS + Firebase + Vercel**
 
 ## プロボーとは？
 プロのギタリストやベーシストのエフェクターボードを個人的にまとめたサイトです。
