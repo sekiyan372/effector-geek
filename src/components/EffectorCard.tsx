@@ -22,7 +22,7 @@ const EffectorCard: VFC<Props> = (props) => {
           src={ effector.imageUrl ? effector.imageUrl : noImage }
           alt={ effector.imageUrl ? `${ effector.name }のイメージ` : 'no image' }
         />
-        <div className="mb-3 border-b border-green-500">
+        <div className="m-3 border-b border-green-500">
           <p className="mb-2">{ effector.brand }</p>
           <p className="text-center">{ effector.name }</p>
         </div>
