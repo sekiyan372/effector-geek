@@ -13,7 +13,7 @@ type Props = {
   errorCode?: number
 }
 
-const Page: NextPage<Props> = (props) => {
+const ShowBoard: NextPage<Props> = (props) => {
   if (props.errorCode) return <Error statusCode={ props.errorCode } />
 
   return (
@@ -60,4 +60,4 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   }
 }
 
-export default Page
+export default ShowBoard

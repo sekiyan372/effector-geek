@@ -14,7 +14,7 @@ const ArticleCard: VFC<Props> = (props) => {
 
   return (
     <Link href={`/boards/${article.id}`}>
-      <div className="p-2 m-2 w-84 border-2 border-solid border-green-500 rounded cursor-pointer">
+      <div className="p-2 m-2 w-80 border-2 border-solid border-green-500 rounded cursor-pointer">
         <img src={ article.imageUrl } alt={`${ article.artist }のエフェクターボード`} />
         <div className="m-3 text-center border-b border-green-500">
           { article.artist } ({ article.band })

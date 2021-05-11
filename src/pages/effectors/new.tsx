@@ -6,10 +6,10 @@ import LinkIndex from '~/components/LinkIndex'
 const NewEffector: NextPage = () => {
   return(
     <>
-      <Head title="エフェクター投稿" />
-      <section>
+      <Head title="エフェクター登録" />
+      <section className="m-12">
         <LinkIndex />
-        <Heading>エフェクターボード投稿</Heading>
+        <Heading>エフェクター登録</Heading>
       </section>
     </>
   )

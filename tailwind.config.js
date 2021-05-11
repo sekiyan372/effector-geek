@@ -3,9 +3,9 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      width: {
-        '84': '21rem',
-      }
+      margin: {
+        'm-center': '0 auto',
+      },
     },
   },
   variants: {

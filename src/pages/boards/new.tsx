@@ -15,7 +15,7 @@ type FormValues = {
   band: string,
 }
 
-const New: NextPage = () => {
+const NewBoard: NextPage = () => {
   const router = useRouter()
   const [preview, setPreview] = useState<string>('')
 
@@ -130,4 +130,4 @@ const New: NextPage = () => {
   )
 }
 
-export default New
+export default NewBoard
