@@ -1,13 +1,17 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/dist/client/router'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import React, { useCallback, useState } from 'react'
+import { useSelector } from 'react-redux'
 import Head from '~/components/Head'
 import Heading from '~/components/Heading'
 import Label from '~/components/Label'
 import LinkIndex from '~/components/LinkIndex'
-import SuccessButton from '~/components/SuccessButton'
+import AddButton from '~/components/Button/AddButton'
+import DeleteButton from '~/components/Button/DeleteButton'
+import SuccessButton from '~/components/Button/SuccessButton'
 import { firestore, storage } from '~/utils/firebase'
+import { getEffectors } from '~/store'
 
 const noImage = require('../../../public/noimage.jpg')
 
@@ -15,33 +19,47 @@ type FormValues = {
   image: File[],
   artist: string,
   band: string,
+  effector: string,
+  effectorIds: {id: string}[]
 }
 
 const NewBoard: NextPage = () => {
   const router = useRouter()
   const [preview, setPreview] = useState<string>(noImage)
+  const effectors = useSelector(getEffectors)
 
-  const { register ,handleSubmit, formState: { errors }, setError } = useForm<FormValues>({
+  const { register ,handleSubmit, formState: { errors }, setError, control } = useForm<FormValues>({
     defaultValues: {
       image: null,
       artist: '',
       band: '',
+      effector: '',
+      effectorIds: [{id: ''}],
     }
+  })
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "effectorIds",
   })
 
   const submitArticle = useCallback(async (value: FormValues) => {
     // 画像をfirebase storageへ保存
     const imagePath = `effector_board/${value.image[0].name}`
     await storage().ref().child(imagePath).put(value.image[0])
+
     // 保存した画像のURLを取得
     const imageUrl = await storage().ref().child(imagePath).getDownloadURL()
+
     // データをfirestoreへ保存
     await firestore().collection('articles').add({
       imageUrl: imageUrl,
       artist: value.artist,
       band: value.band,
+      effectorIds: value.effectorIds,
       createdAt: firestore.FieldValue.serverTimestamp(),
     })
+
     // トップページへ移動
     router.push('/')
   }, [])
@@ -113,7 +131,7 @@ const NewBoard: NextPage = () => {
               <Label htmlFor="band">バンド名 (30文字以内)</Label>
               <input
                 type="text"
-                className="mb-5 border h-10 w-full"
+                className="border h-10 w-full"
                 id="band"
                 {...register('band', { maxLength: 30 })}
               />
@@ -122,6 +140,41 @@ const NewBoard: NextPage = () => {
                   30文字以内で入力してください
                 </div>
               )}
+            </div>
+
+            <div className="mb-5">
+              <Label htmlFor="effector">エフェクター情報</Label>
+              {fields.map(({ id }, index) => {
+                return(
+                  <div key={ id }>
+                    <div className="flex">
+                      <span className="w-1 mt-4 mr-2">{ index + 1 }</span>
+                      <select
+                        id="effecotr"
+                        className="m-2 border h-10 w-11/12"
+                        name={`effectorIds[${index}].effectorId`}
+                        {...register(`effectorIds.${index}.id` as const, { required: true })}
+                      >
+                        <option value={undefined}>未選択</option>
+                        {effectors?.map((effector) => (
+                          <option key={ effector.id } value={ effector.id }>
+                            { effector.brand } { effector.name }
+                          </option>
+                        ))}
+                      </select>
+                      {fields.length > 1 && (
+                        <DeleteButton onClick={() => remove(index)}>削除</DeleteButton>
+                      )}
+                    </div>
+                    {errors[`effectorIds.${index}.id`] && errors[`effectorIds.${index}.id`].type === 'required' && (
+                      <div role="alert" className="text-sm text-red-500">
+                        入力してください
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+              <AddButton onClick={() => append({})}>追加</AddButton>
             </div>
 
             <SuccessButton>投稿</SuccessButton>

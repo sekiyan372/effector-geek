@@ -1,4 +1,22 @@
-import { createSlice, PayloadAction, configureStore, createSelector } from '@reduxjs/toolkit'
+import {
+  createSlice,
+  PayloadAction,
+  configureStore,
+  createSelector,
+  getDefaultMiddleware,
+  combineReducers,
+  EnhancedStore,
+} from '@reduxjs/toolkit'
+import {
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist'
+import createWebStorage from 'redux-persist/lib/storage/createWebStorage'
 import { Article, Effector } from '~/types'
 
 type State = {
@@ -45,17 +63,58 @@ const slice = createSlice({
 export const actions = slice.actions
 export const reducer = slice.reducer
 
-export const store = configureStore({ reducer })
+// persistConfigのためのstorage のエラー対応
+const createNoopStorage = () => {
+  return {
+    getItem(_key) {
+      return Promise.resolve(null)
+    },
+    setItem(_key, value) {
+      return Promise.resolve(value)
+    },
+    removeItem(_key) {
+      return Promise.resolve()
+    },
+  }
+}
 
-store.subscribe(() =>
-  console.log(store.getState())
-)
+// stateを永続化するためのstorage
+const storage = typeof window !== 'undefined' ? createWebStorage('local') : createNoopStorage()
 
-type RootState = ReturnType<typeof store.getState>
+// persistの設定
+const persistConfig = {
+  key: 'effector-geek',
+  version: 1,
+  storage,
+}
+
+// persistに対応したreducer
+const persistedReducer = persistReducer(persistConfig, reducer)
+
+// store
+const useStore = (): EnhancedStore => {
+  return configureStore({
+    reducer: persistedReducer,
+    middleware: getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+  })
+}
+
+export const store = useStore()
+
+// stateの値を確認するためのもの
+// store.subscribe(() =>
+//   console.log(store.getState())
+// )
+
+type RootState = ReturnType<typeof reducer>
 
 export const getArticleIds = createSelector(
   (state: RootState) => state.articles,
-  (articles) => Object.keys(articles),
+  (articles) => Object.keys(articles)
 )
 
 export const getArticleById = (id: Article['id']) =>
@@ -66,7 +125,7 @@ export const getArticleById = (id: Article['id']) =>
 
 export const getEffectorIds = createSelector(
   (state: RootState) => state.effectors,
-  (effectors) => Object.keys(effectors),
+  (effectors) => Object.keys(effectors)
 )
 
 export const getEffectorById = (id: Effector['id']) =>
@@ -74,3 +133,8 @@ export const getEffectorById = (id: Effector['id']) =>
     (state: RootState) => state.effectors,
     (effectors) => effectors[id]
   )
+
+export const getEffectors = createSelector(
+  (state: RootState) => state.effectors,
+  (effectors) => Object.values(effectors)
+)

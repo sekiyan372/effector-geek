@@ -1,6 +1,6 @@
 import { VFC } from 'react'
 import Link from 'next/link'
-import LinkButton from '~/components/LinkButton'
+import LinkButton from '~/components/Button/LinkButton'
 
 const Header: VFC = () => {
   return (
@@ -9,7 +9,7 @@ const Header: VFC = () => {
         <Link href='/'>Effector Geek</Link>
       </span>
       <span className="ml-20 text-white">
-        <Link href='about'>Effector Geekとは？</Link>
+        <Link href='/about'>Effector Geekとは？</Link>
       </span>
       <span className="float-right">
         <LinkButton href='/boards/new'>ボード投稿</LinkButton>

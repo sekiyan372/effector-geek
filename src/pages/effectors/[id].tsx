@@ -33,7 +33,7 @@ const ShowEffector: NextPage<Props> = (props) => {
             src={ props.effector.imageUrl ? props.effector.imageUrl : noImage }
             alt={ props.effector.imageUrl ? `${ props.effector.name }のイメージ` : 'no image' }
           />
-          <p className="m-5 p-3 w-32 border rounded border-yellow-200 bg-yellow-300 font-bold text-center">
+          <p className="m-5 p-3 w-32 border rounded border-yellow-300 bg-yellow-300 font-bold text-center">
             { props.effector.type }
           </p>
         </div>

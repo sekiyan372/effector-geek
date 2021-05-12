@@ -3,12 +3,13 @@ import { firestore } from '~/utils/firebase'
 
 export const articleConverter: firebase.default.firestore.FirestoreDataConverter<Article> = {
   toFirestore(
-    value: Pick<Article, 'artist' | 'band' | 'imageUrl'>
+    value: Pick<Article, 'artist' | 'band' | 'effectorIds' | 'imageUrl'>
   ) {
     return {
       imageUrl: value.imageUrl,
       artist: value.artist,
       band: value.band,
+      effectorIds: value.effectorIds,
       createdAt: firestore.FieldValue.serverTimestamp(),
     }
   },
@@ -19,6 +20,7 @@ export const articleConverter: firebase.default.firestore.FirestoreDataConverter
       imageUrl: data.imageUrl,
       artist: data.artist,
       band: data.band,
+      effectorIds: data.effectorIds,
       createdAt: data.createdAt.toDate().toString(),
     }
   }
