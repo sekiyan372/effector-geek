@@ -6,6 +6,9 @@ module.exports = {
       margin: {
         'm-center': '0 auto',
       },
+      width: {
+        'w-18': '4.5rem',
+      }
     },
   },
   variants: {

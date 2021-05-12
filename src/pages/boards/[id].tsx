@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import Error from 'next/error'
+import EffectorCard from '~/components/EffectorCard'
 import Heading from '~/components/Heading'
 import Head from '~/components/Head'
 import LinkIndex from '~/components/LinkIndex'
@@ -14,6 +15,8 @@ type Props = {
 }
 
 const ShowBoard: NextPage<Props> = (props) => {
+  const effectorIds = props.article.effectorIds.map((value: { id: string }) => value.id)
+
   if (props.errorCode) return <Error statusCode={ props.errorCode } />
 
   return (
@@ -31,6 +34,16 @@ const ShowBoard: NextPage<Props> = (props) => {
             src={ props.article.imageUrl }
             alt={`${ props.article.artist }のエフェクターボード`}
           />
+          <div className="mt-14">
+            <h3 className="mb-5 text-xl font-bold text-green-500">エフェクター情報</h3>
+            <ul className="m-3 flex flex-wrap">
+              {effectorIds.map((effectorId) => (
+                <li key={ effectorId }>
+                  <EffectorCard effectorId={ effectorId } />
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
     </>

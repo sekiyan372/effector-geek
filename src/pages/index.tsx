@@ -17,6 +17,7 @@ const Index: NextPage = () => {
   useEffect(() => {
     firestore()
       .collection("articles")
+      .orderBy('createdAt', 'desc')
       .withConverter(articleConverter)
       .get()
       .then(({ docs, query }) => {
@@ -26,6 +27,7 @@ const Index: NextPage = () => {
 
     firestore()
       .collection("effectors")
+      .orderBy('createdAt', 'desc')
       .withConverter(effectorConverter)
       .get()
       .then(({ docs, query }) => {

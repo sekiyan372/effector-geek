@@ -6,7 +6,7 @@ import Head from '~/components/Head'
 import Heading from '~/components/Heading'
 import Label from '~/components/Label'
 import LinkIndex from '~/components/LinkIndex'
-import SuccessButton from '~/components/SuccessButton'
+import SuccessButton from '~/components/Button/SuccessButton'
 import { firestore, storage } from '~/utils/firebase'
 
 const noImage = require('../../../public/noimage.jpg')
@@ -139,6 +139,7 @@ const NewEffector: NextPage = () => {
                 id="type"
                 {...register('type', { required: true })}
               >
+                <option value={undefined}>未選択</option>
                 <option value="OverDrive">Over Drive</option>
                 <option value="Distortion">Distortion</option>
                 <option value="Fuzz">Fuzz</option>
