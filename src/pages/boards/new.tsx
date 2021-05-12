@@ -86,12 +86,14 @@ const NewBoard: NextPage = () => {
         <div className="m-12">
           <LinkIndex />
           <Heading>エフェクターボード投稿</Heading>
+          <p className="mb-10 text-red-400">* がついた項目は必須項目です。</p>
 
           <form onSubmit={ handleSubmit(submitArticle) }>
-            <div className="mb-5">
-              <Label htmlFor="image">エフェクターボード</Label>
+            <div className="mb-10">
+              <Label htmlFor="image">エフェクターボード画像 *</Label>
               <input
                 type="file"
+                className="m-5"
                 id="image"
                 {...register('image', { required: true })}
                 onChange={ handleChangeFile }
@@ -101,11 +103,13 @@ const NewBoard: NextPage = () => {
                   入力してください
                 </div>
               )}
-              <img src={ preview } alt="プレビュー画像" className="mb-5" />
+              <div className="p-5 border-2 border-dashed border-black rounded-3xl">
+                <img src={ preview } alt="プレビュー画像" className="mx-auto max-h-96" />
+              </div>
             </div>
 
             <div className="mb-5">
-              <Label htmlFor="artist">アーティスト (30文字以内)</Label>
+              <Label htmlFor="artist">アーティスト (30文字以内) *</Label>
               <input
                 type="text"
                 className="p-3 border h-10 w-full"
@@ -168,9 +172,9 @@ const NewBoard: NextPage = () => {
                         id="effecotr"
                         className="m-2 border h-10 w-11/12"
                         name={`effectorIds[${index}].effectorId`}
-                        {...register(`effectorIds.${index}.id` as const, { required: true })}
+                        {...register(`effectorIds.${index}.id` as const)}
                       >
-                        <option value={undefined}>未選択</option>
+                        <option hidden>選択してください</option>
                         {effectors?.map((effector) => (
                           <option key={ effector.id } value={ effector.id }>
                             { effector.brand } { effector.name }
@@ -181,11 +185,6 @@ const NewBoard: NextPage = () => {
                         <DeleteButton onClick={() => remove(index)}>削除</DeleteButton>
                       )}
                     </div>
-                    {errors[`effectorIds.${index}.id`] && errors[`effectorIds.${index}.id`].type === 'required' && (
-                      <div role="alert" className="text-sm text-red-500">
-                        入力してください
-                      </div>
-                    )}
                   </div>
                 )
               })}

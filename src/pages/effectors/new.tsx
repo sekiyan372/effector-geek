@@ -33,7 +33,7 @@ const NewEffector: NextPage = () => {
 
   const submitArticle = useCallback(async (value: FormValues) => {
     let imageUrl = ''
-    if(value.image.length !== 0) {
+    if(value.image) {
       // 画像をfirebase storageへ保存
       const imagePath = `effector/${value.image[0].name}`
       await storage().ref().child(imagePath).put(value.image[0])
@@ -72,22 +72,25 @@ const NewEffector: NextPage = () => {
       <section className="m-12">
         <LinkIndex />
         <Heading>エフェクター登録</Heading>
+        <p className="mb-10 text-red-400">* がついた項目は必須項目です。</p>
 
         <form onSubmit={ handleSubmit(submitArticle) }>
-            <div className="mb-5">
-              <Label htmlFor="image">画像</Label>
+            <div className="mb-10">
+              <Label htmlFor="image">エフェクター画像</Label>
               <input
                 type="file"
-                className=""
+                className="m-5"
                 id="image"
                 {...register('image')}
                 onChange={ handleChangeFile }
               />
-              <img src={ preview } alt="プレビュー画像" className="mb-5" />
+              <div className="p-5 border-2 border-dashed border-black rounded-3xl">
+                <img src={ preview } alt="プレビュー画像" className="mx-auto max-h-96" />
+              </div>
             </div>
 
             <div className="mb-5">
-              <Label htmlFor="brand">ブランド名 (30文字以内)</Label>
+              <Label htmlFor="brand">ブランド名 (30文字以内) *</Label>
               <input
                 type="text"
                 className="p-3 border h-10 w-full"
@@ -110,7 +113,7 @@ const NewEffector: NextPage = () => {
             </div>
 
             <div className="mb-5">
-              <Label htmlFor="name">エフェクター名 (50文字以内)</Label>
+              <Label htmlFor="name">エフェクター名 (50文字以内) *</Label>
               <input
                 type="text"
                 className="p-3 border h-10 w-full"
@@ -133,13 +136,13 @@ const NewEffector: NextPage = () => {
             </div>
 
             <div className="mb-5">
-              <Label htmlFor="type">種類</Label>
+              <Label htmlFor="type">種類 *</Label>
               <select
                 className="mb-5 border h-10 w-full"
                 id="type"
                 {...register('type', { required: true })}
               >
-                <option value={undefined}>未選択</option>
+                <option hidden>選択してください</option>
                 <option value="OverDrive">Over Drive</option>
                 <option value="Distortion">Distortion</option>
                 <option value="Fuzz">Fuzz</option>
