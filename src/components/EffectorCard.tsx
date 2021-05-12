@@ -23,7 +23,7 @@ const EffectorCard: VFC<Props> = (props) => {
           alt={ effector.imageUrl ? `${ effector.name }のイメージ` : 'no image' }
         />
         <div className="m-3 border-b border-green-500">
-          <div className="mb-2">
+          <div className="mb-2 overflow-hidden">
             <span className="font-bold">{ effector.brand }</span>
             <span className="px-1 border rounded-sm border-yellow-300 bg-yellow-300 float-right">{ effector.type }</span>
           </div>
