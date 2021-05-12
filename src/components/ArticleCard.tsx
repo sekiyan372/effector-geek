@@ -17,7 +17,7 @@ const ArticleCard: VFC<Props> = (props) => {
       <div className="p-2 m-2 w-80 border-2 border-solid border-green-500 rounded cursor-pointer">
         <img src={ article.imageUrl } alt={`${ article.artist }のエフェクターボード`} />
         <div className="m-3 text-center border-b border-green-500">
-          { article.artist } ({ article.band })
+          { article.artist }{ article.band !== '' && ` (${ article.band })` }
         </div>
         <div>
           { dayjs(article.createdAt).format('YYYY/MM/DD HH:mm') } 投稿
