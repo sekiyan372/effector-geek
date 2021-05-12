@@ -8,7 +8,7 @@ import { env } from '~/utils/env'
 import { firestore } from '~/utils/firebase'
 import { Effector } from '~/types'
 
-const noImage = require('../../../public/noimage.jpg')
+const NO_IMAGE = require('../../../public/noimage.jpg')
 
 type Props = {
   effector?: Effector
@@ -30,7 +30,7 @@ const ShowEffector: NextPage<Props> = (props) => {
         <div className="m-2">
           <img
             className="m-auto p-2"
-            src={ props.effector.imageUrl ? props.effector.imageUrl : noImage }
+            src={ props.effector.imageUrl ? props.effector.imageUrl : NO_IMAGE }
             alt={ props.effector.imageUrl ? `${ props.effector.name }のイメージ` : 'no image' }
           />
           <p className="m-5 p-3 w-32 border rounded border-yellow-300 bg-yellow-300 font-bold text-center">
