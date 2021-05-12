@@ -35,6 +35,10 @@ const ShowBoard: NextPage<Props> = (props) => {
             alt={`${ props.article.artist }のエフェクターボード`}
           />
           <div className="mt-14">
+            <h3 className="mb-5 text-xl font-bold text-green-500">説明</h3>
+            <p className="m-3 text-lg">{ props.article.description }</p>
+          </div>
+          <div className="mt-14">
             <h3 className="mb-5 text-xl font-bold text-green-500">エフェクター情報</h3>
             <ul className="m-3 flex flex-wrap">
               {effectorIds.map((effectorId) => (

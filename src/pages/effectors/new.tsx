@@ -90,7 +90,7 @@ const NewEffector: NextPage = () => {
               <Label htmlFor="brand">ブランド名 (30文字以内)</Label>
               <input
                 type="text"
-                className="border h-10 w-full"
+                className="p-3 border h-10 w-full"
                 id="artist"
                 {...register('brand', {
                   required: true,
@@ -113,7 +113,7 @@ const NewEffector: NextPage = () => {
               <Label htmlFor="name">エフェクター名 (50文字以内)</Label>
               <input
                 type="text"
-                className="border h-10 w-full"
+                className="p-3 border h-10 w-full"
                 id="band"
                 {...register('name', {
                   required: true,

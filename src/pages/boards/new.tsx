@@ -19,7 +19,7 @@ type FormValues = {
   image: File[],
   artist: string,
   band: string,
-  effector: string,
+  description: string,
   effectorIds: {id: string}[]
 }
 
@@ -33,7 +33,7 @@ const NewBoard: NextPage = () => {
       image: null,
       artist: '',
       band: '',
-      effector: '',
+      description: '',
       effectorIds: [{id: ''}],
     }
   })
@@ -56,6 +56,7 @@ const NewBoard: NextPage = () => {
       imageUrl: imageUrl,
       artist: value.artist,
       band: value.band,
+      description: value.description,
       effectorIds: value.effectorIds,
       createdAt: firestore.FieldValue.serverTimestamp(),
     })
@@ -91,7 +92,6 @@ const NewBoard: NextPage = () => {
               <Label htmlFor="image">エフェクターボード</Label>
               <input
                 type="file"
-                className=""
                 id="image"
                 {...register('image', { required: true })}
                 onChange={ handleChangeFile }
@@ -108,7 +108,7 @@ const NewBoard: NextPage = () => {
               <Label htmlFor="artist">アーティスト (30文字以内)</Label>
               <input
                 type="text"
-                className="border h-10 w-full"
+                className="p-3 border h-10 w-full"
                 id="artist"
                 {...register('artist', {
                   required: true,
@@ -131,13 +131,28 @@ const NewBoard: NextPage = () => {
               <Label htmlFor="band">バンド名 (30文字以内)</Label>
               <input
                 type="text"
-                className="border h-10 w-full"
+                className="p-3 border h-10 w-full"
                 id="band"
                 {...register('band', { maxLength: 30 })}
               />
               {errors.band && errors.band.type === 'maxLength' && (
                 <div role="alert" className="text-sm text-red-500">
                   30文字以内で入力してください
+                </div>
+              )}
+            </div>
+
+            <div className="mb-5">
+              <Label htmlFor="description">説明 (500文字以内)</Label>
+              <p>こだわりポイントなどがあれば記入してください！</p>
+              <textarea
+                className="p-3 border h-32 w-full"
+                id="description"
+                {...register('description', { maxLength: 500 })}
+              />
+              {errors.band && errors.band.type === 'maxLength' && (
+                <div role="alert" className="text-sm text-red-500">
+                  500文字以内で入力してください
                 </div>
               )}
             </div>

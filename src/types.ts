@@ -3,6 +3,7 @@ export type Article = {
   imageUrl: string
   artist: string
   band: string
+  description: string
   effectorIds: {id: string}[]
   createdAt: Date
 }
