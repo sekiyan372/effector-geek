@@ -9,6 +9,12 @@ const Header: VFC = () => {
         <Link href='/'>Effector Geek</Link>
       </span>
       <span className="ml-20 text-white">
+        <Link href='/boards/index'>エフェクターボード</Link>
+      </span>
+      <span className="ml-5 text-white">
+        <Link href='/effectors/index'>登録エフェクター</Link>
+      </span>
+      <span className="ml-5 text-white">
         <Link href='/about'>Effector Geekとは？</Link>
       </span>
       <span className="float-right">

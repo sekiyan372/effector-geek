@@ -13,7 +13,7 @@ import SuccessButton from '~/components/Button/SuccessButton'
 import { firestore, storage } from '~/utils/firebase'
 import { getEffectors } from '~/store'
 
-const noImage = require('../../../public/noimage.jpg')
+const NO_IMAGE = require('../../../public/noimage.jpg')
 
 type FormValues = {
   image: File[],
@@ -25,7 +25,7 @@ type FormValues = {
 
 const NewBoard: NextPage = () => {
   const router = useRouter()
-  const [preview, setPreview] = useState<string>(noImage)
+  const [preview, setPreview] = useState<string>(NO_IMAGE)
   const effectors = useSelector(getEffectors)
 
   const { register ,handleSubmit, formState: { errors }, setError, control } = useForm<FormValues>({
