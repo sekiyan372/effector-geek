@@ -10,6 +10,11 @@ module.exports = {
         'w-18': '4.5rem',
       },
     },
+    maxHeight: {
+      '100': '25rem',
+      '108': '27rem',
+      '120': '30rem'
+    }
   },
   variants: {
     extend: {},
