@@ -147,6 +147,7 @@ const NewEffector: NextPage = () => {
                 <option value="Distortion">Distortion</option>
                 <option value="Fuzz">Fuzz</option>
                 <option value="Booster">Booster</option>
+                <option value="PreAmp">Pre Amp</option>
                 <option value="Chorus">Chorus</option>
                 <option value="Flanger">Flanger</option>
                 <option value="Phaser">Phaser</option>
