@@ -11,6 +11,9 @@ const Header: VFC = () => {
       <span className="my-3 sm:ml-20 text-white block sm:inline">
         <Link href='/about'>Effector Geekとは？</Link>
       </span>
+      <span className="my-3 ml-8 text-white block sm:inline">
+        <Link href='/contact'>お問い合わせ</Link>
+      </span>
       <span className="sm:float-right">
         <LinkButton href='/boards/new'>ボード投稿</LinkButton>
         <LinkButton href='/effectors/new'>エフェクター登録</LinkButton>
