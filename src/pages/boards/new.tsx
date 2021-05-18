@@ -167,10 +167,10 @@ const NewBoard: NextPage = () => {
                 return(
                   <div key={ id }>
                     <div className="flex">
-                      <span className="w-1 mt-4 mr-2">{ index + 1 }</span>
+                      <span className="w-1 mt-6 mr-2">{ index + 1 }</span>
                       <select
                         id="effecotr"
-                        className="m-2 border h-10 w-11/12"
+                        className="m-2 border px-4 py-4 w-11/12"
                         name={`effectorIds[${index}].effectorId`}
                         {...register(`effectorIds.${index}.id` as const)}
                       >

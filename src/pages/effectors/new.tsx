@@ -138,7 +138,7 @@ const NewEffector: NextPage = () => {
             <div className="mb-5">
               <Label htmlFor="type">種類 *</Label>
               <select
-                className="mb-5 border h-10 w-full"
+                className="mb-5 border px-4 py-4 w-full"
                 id="type"
                 {...register('type', { required: true })}
               >
