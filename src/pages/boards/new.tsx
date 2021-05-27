@@ -154,7 +154,7 @@ const NewBoard: NextPage = () => {
                 id="description"
                 {...register('description', { maxLength: 500 })}
               />
-              {errors.band && errors.band.type === 'maxLength' && (
+              {errors.description && errors.description.type === 'maxLength' && (
                 <div role="alert" className="text-sm text-red-500">
                   500文字以内で入力してください
                 </div>

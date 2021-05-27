@@ -27,7 +27,7 @@ const NewEffector: NextPage = () => {
       image: null,
       name: '',
       brand: '',
-      type: '',
+      type: null,
     }
   })
 
@@ -94,7 +94,7 @@ const NewEffector: NextPage = () => {
               <input
                 type="text"
                 className="p-3 border h-10 w-full"
-                id="artist"
+                id="brand"
                 {...register('brand', {
                   required: true,
                   maxLength: 30,
@@ -117,7 +117,7 @@ const NewEffector: NextPage = () => {
               <input
                 type="text"
                 className="p-3 border h-10 w-full"
-                id="band"
+                id="name"
                 {...register('name', {
                   required: true,
                   maxLength: 50,
@@ -168,7 +168,7 @@ const NewEffector: NextPage = () => {
                 <option value="Cable">Cable</option>
                 <option value="other">その他</option>
               </select>
-              {errors.name && errors.name.type === 'required' && (
+              {errors.type && errors.type.type === 'required' && (
                 <div role="alert" className="text-sm text-red-500">
                   選択してください
                 </div>
