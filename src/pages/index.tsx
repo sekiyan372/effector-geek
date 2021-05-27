@@ -80,7 +80,7 @@ const Index: NextPage = () => {
       <section>
         <div className="m-12">
           <form onSubmit={ handleSubmit(SubmitSerch) }>
-            <Label htmlFor="serch" className="text-green-500">検索</Label>
+            <Label htmlFor="serch" className="text-green-500">エフェクターで検索</Label>
             <div className="flex">
               <select
                 className="m-2 border px-4 py-2 w-5/6"
