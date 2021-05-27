@@ -175,7 +175,7 @@ const NewEffector: NextPage = () => {
               )}
             </div>
 
-            <SuccessButton>投稿</SuccessButton>
+            <SuccessButton className="w-60">投稿</SuccessButton>
           </form>
       </section>
     </>

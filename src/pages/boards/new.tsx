@@ -191,7 +191,7 @@ const NewBoard: NextPage = () => {
               <AddButton onClick={() => append({})}>追加</AddButton>
             </div>
 
-            <SuccessButton>投稿</SuccessButton>
+            <SuccessButton className="w-60">投稿</SuccessButton>
           </form>
         </div>
       </section>
