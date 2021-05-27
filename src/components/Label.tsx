@@ -1,11 +1,16 @@
-import { FC } from 'react'
+import { FC, LabelHTMLAttributes } from 'react'
+import ClassNames from 'classnames'
 
-type Props = {
-  htmlFor: string
-}
+type Props = LabelHTMLAttributes<HTMLLabelElement>
 
-const Label: FC<Props> = ({ htmlFor, children }) => (
-  <label htmlFor={ htmlFor } className="font-bold block text-lg">
+const Label: FC<Props> = ({ children, htmlFor, className }) => (
+  <label
+    htmlFor={ htmlFor }
+    className={ClassNames(
+      "font-bold block text-lg",
+      className
+    )}
+  >
     { children }
   </label>
 )
