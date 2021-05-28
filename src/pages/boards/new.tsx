@@ -284,7 +284,7 @@ const NewBoard: NextPage = () => {
                         onChange={(e) => handleChangeEffectors(e, index)}
                         value={inEffectors[index]}
                       >
-                        <option value={undefined}>選択してください</option>
+                        <option value={undefined}>未選択</option>
                         {effectors?.map((effector) => (
                           <option key={ effector.id } value={ effector.id }>
                             { effector.brand } { effector.name }

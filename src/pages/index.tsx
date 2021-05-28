@@ -87,7 +87,6 @@ const Index: NextPage = () => {
                 id="serch"
                 {...register('effectorId', { required: true })}
               >
-                <option hidden>選択してください</option>
                 {effectors?.map((effector) => (
                   <option key={ effector.id } value={ effector.id }>
                     { effector.brand } { effector.name }

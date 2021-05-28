@@ -163,7 +163,6 @@ const NewEffector: NextPage = () => {
                 id="type"
                 {...register('type', { required: true })}
               >
-                <option hidden>選択してください</option>
                 <option value="OverDrive">Over Drive</option>
                 <option value="Distortion">Distortion</option>
                 <option value="Fuzz">Fuzz</option>
