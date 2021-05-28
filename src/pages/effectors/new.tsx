@@ -33,7 +33,7 @@ const NewEffector: NextPage = () => {
 
   const submitArticle = useCallback(async (value: FormValues) => {
     let imageUrl = ''
-    if(value.image) {
+    if(value.image[0]) {
       // 画像をfirebase storageへ保存
       const imagePath = `effector/${value.image[0].name}`
       await storage().ref().child(imagePath).put(value.image[0])
@@ -55,7 +55,23 @@ const NewEffector: NextPage = () => {
   const handleChangeFile = (event) => {
     const { files } = event.target
 
-    if(files[0].size > 10485760) {
+    // ファイル選択でキャンセルを押した時
+    if (files.length === 0) {
+      setPreview(NO_IMAGE)
+      return
+    }
+
+    // ファイルで画像以外が選択された時
+    if (files[0].type !== 'image/jpeg' && files[0].type !== 'image/png') {
+      setError('image', {
+        type: 'manual',
+        message: 'jpegまたはpng画像を選択してください',
+      })
+      setPreview(NO_IMAGE)
+      return
+    }
+
+    if(files[0].size > 1048576) {
       setError('image', {
         type: 'manual',
         message: '10MB以下のファイルをアップロードしてください',
@@ -84,6 +100,11 @@ const NewEffector: NextPage = () => {
                 {...register('image')}
                 onChange={ handleChangeFile }
               />
+              {errors.image && (errors.image as any).type === 'manual' && (
+                <div role="alert" className="text-sm text-red-500 mb-5">
+                  { (errors.image as any).message }
+                </div>
+              )}
               <div className="p-5 border-2 border-dashed border-black rounded-3xl">
                 <img src={ preview } alt="プレビュー画像" className="mx-auto max-h-96" />
               </div>
