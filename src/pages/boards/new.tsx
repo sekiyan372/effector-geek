@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/dist/client/router'
 import { useForm, useFieldArray } from 'react-hook-form'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, ChangeEvent } from 'react'
 import { useSelector } from 'react-redux'
 import Head from '~/components/Head'
 import Heading from '~/components/Heading'
@@ -16,7 +16,7 @@ import { getEffectors } from '~/store'
 const NO_IMAGE = require('../../../public/noimage.jpg')
 
 type FormValues = {
-  image: File[],
+  image: File,
   artist: string,
   band: string,
   description: string,
@@ -25,8 +25,11 @@ type FormValues = {
 
 const NewBoard: NextPage = () => {
   const router = useRouter()
-  const [preview, setPreview] = useState<string>(NO_IMAGE)
   const effectors = useSelector(getEffectors)
+  const [preview, setPreview] = useState<string>(NO_IMAGE)
+  const [inEffectors, setInEffects] = useState<string[]>([])
+  const [isSelected, setIsSelected] = useState<boolean>(true)
+  const [isUnique, setIsUnique] = useState<boolean>(true)
 
   const { register ,handleSubmit, formState: { errors }, setError, control } = useForm<FormValues>({
     defaultValues: {
@@ -34,8 +37,9 @@ const NewBoard: NextPage = () => {
       artist: '',
       band: '',
       description: '',
-      effectorIds: [{id: ''}],
-    }
+      effectorIds: [],
+    },
+    mode: 'onChange'
   })
 
   const { fields, append, remove } = useFieldArray({
@@ -43,7 +47,121 @@ const NewBoard: NextPage = () => {
     name: "effectorIds",
   })
 
+  // エフェクターボード画像を選択した時の処理
+  const handleChangeFile = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    const { files } = event.target
+
+    // ファイル選択でキャンセルを押した時
+    if (files.length === 0) {
+      setError('image', {
+        type: 'required',
+      })
+      setPreview(NO_IMAGE)
+      return
+    }
+
+    // ファイルで画像以外が選択された時
+    if (files[0].type !== 'image/jpeg' && files[0].type !== 'image/png') {
+      setError('image', {
+        type: 'manual',
+        message: 'jpegまたはpng画像を選択してください',
+      })
+      setPreview(NO_IMAGE)
+      return
+    }
+
+    // 画像の容量が大きすぎる時
+    if(files[0].size >= 1048576) {
+      setError('image', {
+        type: 'manual',
+        message: '1MB以下のファイルをアップロードしてください',
+      })
+      setPreview(NO_IMAGE)
+      return
+    }
+
+    setPreview(URL.createObjectURL(files[0]))
+  }, [])
+
+  // エフェクター選択の値が変わったら発火
+  const handleChangeEffectors = (event: ChangeEvent<HTMLSelectElement>, index: number) => {
+    // 選択されているフィールドを保持
+    const arrayBefore = inEffectors.slice(0, index)
+    const arrayBack = inEffectors.slice(index + 1, inEffectors.length)
+    let newEffectors = []
+    if (index !== 0) {
+      newEffectors = [...arrayBefore, event.target.value, ...arrayBack]
+    } else {
+      newEffectors = [event.target.value, ...arrayBack]
+    }
+    setInEffects(newEffectors)
+
+    // 選択されていないフィールドがないか
+    const checkSelected = newEffectors.filter((id) => id === '選択してください')
+    if (checkSelected.length !== 0) {
+      setIsSelected(false)
+    } else {
+      setIsSelected(true)
+    }
+
+    // 重複しているフィールドがないか
+    const checkUnique = inEffectors.filter((id) => id === event.target.value)
+    if (checkUnique.length !== 0 && event.target.value !== '選択してください') {
+      setIsUnique(false)
+    } else {
+      setIsUnique(true)
+    }
+  }
+
+  // エフェクター選択のフォームを増やすボタンを押した時の処理
+  const handleAppendEffectors = () => {
+    if (isSelected && isUnique) {
+      append({})
+      const newEffectors = [...inEffectors, '選択してください']
+      setInEffects(newEffectors)
+      setIsSelected(false)
+    }
+  }
+
+  // エフェクター選択のフォームの削除ボタンを押した時の処理
+  const handleDeleteEffectors = (index: number) => {
+    const arrayBefore = inEffectors.slice(0, index)
+    const arrayBack = inEffectors.slice(index + 1, inEffectors.length)
+    let newEffectors = []
+    if (index !== 0) {
+      newEffectors = [...arrayBefore, ...arrayBack]
+    } else {
+      newEffectors = arrayBack
+    }
+    setInEffects(newEffectors)
+    remove(index)
+
+    // エフェクター情報がなくなったら選択していない値はなくなる
+    if (newEffectors.length === 0) {
+      setIsSelected(true)
+    }
+
+    // 削除した後の残りのフィールドに重複した値があるかどうかを確認
+    for (let i = 0; i < newEffectors.length; i++) {
+      for (let j = 0; j < newEffectors.length; j++) {
+        if (i !== j) {
+          if (newEffectors[i] === newEffectors[j]) {
+            setIsUnique(false)
+            return
+          }
+        }
+      }
+    }
+    setIsUnique(true)
+  }
+
+  // 投稿ボタンを押した時の処理
   const submitArticle = useCallback(async (value: FormValues) => {
+    // エフェクター選択で選択されていない項目がないかのチェック
+    if (!(isSelected && isUnique)) {
+      return
+    }
+
     // 画像をfirebase storageへ保存
     const imagePath = `effector_board/${value.image[0].name}`
     await storage().ref().child(imagePath).put(value.image[0])
@@ -65,20 +183,6 @@ const NewBoard: NextPage = () => {
     router.push('/')
   }, [])
 
-  const handleChangeFile = (event) => {
-    const { files } = event.target
-
-    if(files[0].size > 10485760) {
-      setError('image', {
-        type: 'manual',
-        message: '10MB以下のファイルをアップロードしてください',
-      })
-      return
-    }
-
-    setPreview(URL.createObjectURL(files[0]))
-  }
-
   return(
     <>
       <Head title="エフェクターボード投稿" />
@@ -98,9 +202,14 @@ const NewBoard: NextPage = () => {
                 {...register('image', { required: true })}
                 onChange={ handleChangeFile }
               />
-              {errors.image && (
-                <div role="alert" className="text-sm text-red-500">
+              {errors.image && (errors.image as any).type === 'required' && (
+                <div role="alert" className="text-sm text-red-500 mb-5">
                   入力してください
+                </div>
+              )}
+              {errors.image && (errors.image as any).type === 'manual' && (
+                <div role="alert" className="text-sm text-red-500 mb-5">
+                  { (errors.image as any).message }
                 </div>
               )}
               <div className="p-5 border-2 border-dashed border-black rounded-3xl">
@@ -171,24 +280,33 @@ const NewBoard: NextPage = () => {
                       <select
                         id="effecotr"
                         className="m-2 border px-4 py-4 w-11/12"
-                        name={`effectorIds[${index}].effectorId`}
-                        {...register(`effectorIds.${index}.id` as const)}
+                        {...register(`effectorIds.${index}.id` as const, {required: true})}
+                        onChange={(e) => handleChangeEffectors(e, index)}
+                        value={inEffectors[index]}
                       >
-                        <option hidden>選択してください</option>
+                        <option value={undefined}>選択してください</option>
                         {effectors?.map((effector) => (
                           <option key={ effector.id } value={ effector.id }>
                             { effector.brand } { effector.name }
                           </option>
                         ))}
                       </select>
-                      {fields.length > 1 && (
-                        <DeleteButton onClick={() => remove(index)}>削除</DeleteButton>
-                      )}
+                      <DeleteButton onClick={() => handleDeleteEffectors(index)}>削除</DeleteButton>
                     </div>
                   </div>
                 )
               })}
-              <AddButton onClick={() => append({})}>追加</AddButton>
+              <AddButton onClick={handleAppendEffectors}>追加</AddButton>
+              {!isSelected && (
+                <div role="alert" className="text-sm text-red-500">
+                  選択されていないフィールドがあります
+                </div>
+              )}
+              {!isUnique && (
+                <div role="alert" className="text-sm text-red-500">
+                  重複するエフェクターが選択されています
+                </div>
+              )}
             </div>
 
             <SuccessButton className="w-60">投稿</SuccessButton>
