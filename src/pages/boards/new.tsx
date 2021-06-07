@@ -7,6 +7,7 @@ import Head from '~/components/Head'
 import Heading from '~/components/Heading'
 import Label from '~/components/Label'
 import LinkIndex from '~/components/LinkIndex'
+import Select from '~/components/Select'
 import AddButton from '~/components/Button/AddButton'
 import DeleteButton from '~/components/Button/DeleteButton'
 import SuccessButton from '~/components/Button/SuccessButton'
@@ -277,9 +278,9 @@ const NewBoard: NextPage = () => {
                   <div key={ id }>
                     <div className="flex">
                       <span className="w-1 mt-6 mr-2">{ index + 1 }</span>
-                      <select
+                      <Select
+                        className="py-4 w-5/6"
                         id="effecotr"
-                        className="m-2 border px-4 py-4 w-11/12"
                         {...register(`effectorIds.${index}.id` as const, {required: true})}
                         onChange={(e) => handleChangeEffectors(e, index)}
                         value={inEffectors[index]}
@@ -290,7 +291,7 @@ const NewBoard: NextPage = () => {
                             { effector.brand } { effector.name }
                           </option>
                         ))}
-                      </select>
+                      </Select>
                       <DeleteButton onClick={() => handleDeleteEffectors(index)}>削除</DeleteButton>
                     </div>
                   </div>

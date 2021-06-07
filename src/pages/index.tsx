@@ -8,6 +8,7 @@ import EffectorCard from '~/components/EffectorCard'
 import Head from '~/components/Head'
 import Heading from '~/components/Heading'
 import Label from '~/components/Label'
+import Select from '~/components/Select'
 import { actions, getArticleIds, getEffectorIds, getEffectors } from '~/store'
 import { articleConverter, effectorConverter } from '~/utils/converter'
 import { firestore } from '~/utils/firebase'
@@ -82,8 +83,8 @@ const Index: NextPage = () => {
           <form onSubmit={ handleSubmit(SubmitSerch) }>
             <Label htmlFor="serch" className="text-green-500">エフェクターで検索</Label>
             <div className="flex">
-              <select
-                className="m-2 border px-4 py-2 w-5/6"
+              <Select
+                className="py-2 w-5/6"
                 id="serch"
                 {...register('effectorId', { required: true })}
               >
@@ -92,7 +93,7 @@ const Index: NextPage = () => {
                     { effector.brand } { effector.name }
                   </option>
                 ))}
-              </select>
+              </Select>
               <SuccessButton className="w-15 rounded-md">検索</SuccessButton>
             </div>
             {errors.effectorId && errors.effectorId.type === 'required' && (
