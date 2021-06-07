@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form'
 import React, { useCallback, useState } from 'react'
 import Head from '~/components/Head'
 import Heading from '~/components/Heading'
+import InputFile from '~/components/InputFile'
+import InputText from '~/components/InputText'
 import Label from '~/components/Label'
 import LinkIndex from '~/components/LinkIndex'
 import Select from '~/components/Select'
@@ -94,9 +96,7 @@ const NewEffector: NextPage = () => {
         <form onSubmit={ handleSubmit(submitArticle) }>
           <div className="mb-10">
             <Label htmlFor="image">エフェクター画像</Label>
-            <input
-              type="file"
-              className="m-5"
+            <InputFile
               id="image"
               {...register('image')}
               onChange={ handleChangeFile }
@@ -113,9 +113,7 @@ const NewEffector: NextPage = () => {
 
           <div className="mb-5">
             <Label htmlFor="brand">ブランド名 (30文字以内) *</Label>
-            <input
-              type="text"
-              className="p-3 border h-10 w-full"
+            <InputText
               id="brand"
               {...register('brand', {
                 required: true,
@@ -136,9 +134,7 @@ const NewEffector: NextPage = () => {
 
           <div className="mb-5">
             <Label htmlFor="name">エフェクター名 (50文字以内) *</Label>
-            <input
-              type="text"
-              className="p-3 border h-10 w-full"
+            <InputText
               id="name"
               {...register('name', {
                 required: true,

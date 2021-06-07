@@ -5,6 +5,8 @@ import React, { useCallback, useState, ChangeEvent } from 'react'
 import { useSelector } from 'react-redux'
 import Head from '~/components/Head'
 import Heading from '~/components/Heading'
+import InputFile from '~/components/InputFile'
+import InputText from '~/components/InputText'
 import Label from '~/components/Label'
 import LinkIndex from '~/components/LinkIndex'
 import Select from '~/components/Select'
@@ -196,9 +198,7 @@ const NewBoard: NextPage = () => {
           <form onSubmit={ handleSubmit(submitArticle) }>
             <div className="mb-10">
               <Label htmlFor="image">エフェクターボード画像 *</Label>
-              <input
-                type="file"
-                className="m-5"
+              <InputFile
                 id="image"
                 {...register('image', { required: true })}
                 onChange={ handleChangeFile }
@@ -220,9 +220,7 @@ const NewBoard: NextPage = () => {
 
             <div className="mb-5">
               <Label htmlFor="artist">アーティスト (30文字以内) *</Label>
-              <input
-                type="text"
-                className="p-3 border h-10 w-full"
+              <InputText
                 id="artist"
                 {...register('artist', {
                   required: true,
@@ -243,9 +241,7 @@ const NewBoard: NextPage = () => {
 
             <div className="mb-5">
               <Label htmlFor="band">バンド名 (30文字以内)</Label>
-              <input
-                type="text"
-                className="p-3 border h-10 w-full"
+              <InputText
                 id="band"
                 {...register('band', { maxLength: 30 })}
               />
