@@ -8,8 +8,19 @@ module.exports = {
       },
       width: {
         'w-18': '4.5rem',
-      }
+      },
     },
+    height: {
+      '200': '50rem',
+      '240': '60rem',
+      '260': '65rem',
+      '280': '70rem',
+    },
+    maxHeight: {
+      '100': '25rem',
+      '108': '27rem',
+      '120': '30rem'
+    }
   },
   variants: {
     extend: {},

@@ -16,14 +16,14 @@ const EffectorCard: VFC<Props> = (props) => {
 
   return (
     <Link href={`/effectors/${effector.id}`}>
-      <div className="p-2 m-2 w-56 border-2 border-solid border-green-500 rounded cursor-pointer">
+      <div className="p-2 m-2 w-56 border-2 border-solid border-green-500 rounded cursor-pointer hover:bg-gray-200 focus:outline-none focus:shadow-outline">
         <img
           className="m-auto w-1/2"
           src={ effector.imageUrl ? effector.imageUrl : NO_IMAGE }
           alt={ effector.imageUrl ? `${ effector.name }のイメージ` : 'no image' }
         />
         <div className="m-3 border-b border-green-500">
-          <div className="mb-2">
+          <div className="mb-2 overflow-hidden">
             <span className="font-bold">{ effector.brand }</span>
             <span className="px-1 border rounded-sm border-yellow-300 bg-yellow-300 float-right">{ effector.type }</span>
           </div>

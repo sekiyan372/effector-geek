@@ -1,8 +1,17 @@
-import { FC } from 'react'
+import { FC, ButtonHTMLAttributes } from 'react'
+import ClassNames from 'classnames'
 
-const SuccessButton: FC = ({ children }) => (
-  <div className="m-10 text-center">
-    <button type="submit" className="border bg-green-500 w-60 h-10 text-white">
+type Props = ButtonHTMLAttributes<HTMLButtonElement>
+
+const SuccessButton: FC<Props> = ({ children, className }) => (
+  <div className="text-center">
+    <button
+      type="submit"
+      className={ClassNames(
+        "border border-green-500 bg-green-500 px-4 py-2 m-2 text-white hover:bg-green-600 focus:outline-none focus:shadow-outline",
+        className
+      )}
+    >
       {children}
     </button>
   </div>

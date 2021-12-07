@@ -29,7 +29,7 @@ const ShowEffector: NextPage<Props> = (props) => {
         </Heading>
         <div className="m-2">
           <img
-            className="m-auto p-2"
+            className="m-auto p-2 max-h-120 max-w-screen-md"
             src={ props.effector.imageUrl ? props.effector.imageUrl : NO_IMAGE }
             alt={ props.effector.imageUrl ? `${ props.effector.name }のイメージ` : 'no image' }
           />
