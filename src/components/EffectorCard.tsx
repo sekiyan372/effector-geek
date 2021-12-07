@@ -16,7 +16,7 @@ const EffectorCard: VFC<Props> = (props) => {
 
   return (
     <Link href={`/effectors/${effector.id}`}>
-      <div className="p-2 m-2 w-56 border-2 border-solid border-green-500 rounded cursor-pointer">
+      <div className="p-2 m-2 w-56 border-2 border-solid border-green-500 rounded cursor-pointer hover:bg-gray-200 focus:outline-none focus:shadow-outline">
         <img
           className="m-auto w-1/2"
           src={ effector.imageUrl ? effector.imageUrl : NO_IMAGE }
