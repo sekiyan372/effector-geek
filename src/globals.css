@@ -1,24 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer utilities {
-  .link-black {
-    position:relative;
-    display:block;
-  }
-  .link-black:before {
-    content:"";
-    display:block;
-    width:100%;
-    height:100%;
-    position:absolute;
-    z-index:2;
-    background:#000;/*好みの色に変えてください。*/
-    opacity:0;
-    transition:0.3s;
-  }
-  .link-black:hover:before{
-    opacity:0.2;
-  }
-}
