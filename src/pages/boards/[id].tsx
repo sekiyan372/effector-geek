@@ -23,10 +23,12 @@ const ShowBoard: NextPage<Props> = (props) => {
     <>
       <Head title={`${ props.article.artist }のエフェクターボード`} />
       <section className="m-12">
-        <LinkIndex />
+        <LinkIndex href="/boards" text="エフェクターボード一覧へ" />
         <Heading>
           { props.article.artist }
-          <span className="ml-8">from { props.article.band }</span>
+          { props.article.band && (
+            <span className="ml-8">from { props.article.band }</span>
+          )}
         </Heading>
         <div className="p-2 m-2">
           <img
