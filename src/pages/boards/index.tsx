@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect } from 'react'
 import { NextPage, GetStaticProps } from 'next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
@@ -38,33 +38,10 @@ const IndexBoard: NextPage<Props> = (props) => {
     dispatch(actions.updateArticles(props.articles))
   }, [])
 
-  const SubmitSerch = (value) => {
-    // firestore()
-    //   .collection("articles")
-    //   .orderBy('createdAt', 'desc')
-    //   .withConverter(articleConverter)
-    //   .get()
-    //   .then(({ docs, query }) => {
-    //     const articles = []
-    //     docs.forEach((doc) => {
-    //       let isContain: boolean = false  // 含まれているかの判定値
-    //       doc.data().effectorIds.forEach((obj) => {
-    //         if(obj.id === value.effectorId) {
-    //           isContain = true
-    //         }
-    //       })
-    //       // 検索したエフェクターが含まれていたら配列に入れる
-    //       if(isContain) {
-    //         articles.push(doc.data())
-    //       }
-    //     })
-    //     dispatch(actions.updateArticles(articles))
-    //   })
-    const serchArticles = props.articles.filter((article) => {
-      article.effectorIds.includes(value.id)
-      console.log(article.effectorIds)
-      console.log(value.id)
-    })
+  const SubmitSerch = (value: FormValues) => {
+    const serchArticles = props.articles.filter((article) =>
+      article.effectorIds.some((effectorId) => effectorId.id === value.effectorId)
+    )
     dispatch(actions.updateArticles(serchArticles))
   }
 

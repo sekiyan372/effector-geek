@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import Link from 'next/link'
-import { useEffect, useCallback } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ArticleCard from '~/components/ArticleCard'
 import EffectorCard from '~/components/EffectorCard'
@@ -19,30 +19,6 @@ const Index: NextPage = () => {
   const dispatch = useDispatch()
   const articleIds = useSelector(getArticleIds)
   const effectorIds = useSelector(getEffectorIds)
-
-  // const SubmitSerch = useCallback(async (value) => {
-  //   firestore()
-  //     .collection("articles")
-  //     .orderBy('createdAt', 'desc')
-  //     .withConverter(articleConverter)
-  //     .get()
-  //     .then(({ docs, query }) => {
-  //       const articles = []
-  //       docs.forEach((doc) => {
-  //         let isContain: boolean = false  // 含まれているかの判定値
-  //         doc.data().effectorIds.forEach((obj) => {
-  //           if(obj.id === value.effectorId) {
-  //             isContain = true
-  //           }
-  //         })
-  //         // 検索したエフェクターが含まれていたら配列に入れる
-  //         if(isContain) {
-  //           articles.push(doc.data())
-  //         }
-  //       })
-  //       dispatch(actions.updateArticles(articles))
-  //     })
-  // }, [])
 
   useEffect(() => {
     firestore()
