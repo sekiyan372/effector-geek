@@ -116,7 +116,7 @@ const Index: NextPage = () => {
           <Heading>
             <span className="">新着エフェクターボード</span>
             <span className="float-right text-base text-blue-500">
-              <Link href="/boards/index">もっとみる</Link>
+              <Link href="/boards">もっとみる</Link>
               <span className="mx-1" />
               <FontAwesomeIcon icon={ faChevronRight } />
             </span>
@@ -137,7 +137,7 @@ const Index: NextPage = () => {
           <Heading>
             <span>新着登録エフェクター</span>
             <span className="float-right text-base text-blue-500">
-              <Link href="/effectors/index">もっとみる</Link>
+              <Link href="/effectors">もっとみる</Link>
               <span className="mx-1" />
               <FontAwesomeIcon icon={ faChevronRight } />
             </span>

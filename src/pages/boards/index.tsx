@@ -1,27 +1,26 @@
-import { NextPage } from 'next'
 import { useEffect } from 'react'
+import { NextPage, GetStaticProps } from 'next'
 import { useDispatch, useSelector } from 'react-redux'
 import ArticleCard from '~/components/ArticleCard'
 import Head from '~/components/Head'
 import Heading from '~/components/Heading'
 import { actions, getArticleIds } from '~/store'
 import { articleConverter } from '~/utils/converter'
+import { env } from '~/utils/env'
 import { firestore } from '~/utils/firebase'
+import { Article } from '~/types'
 
-const IndexBoard: NextPage = () => {
+type Props = {
+  articles?: Article[]
+  errorCode?: number
+}
+
+const IndexBoard: NextPage<Props> = (props) => {
   const dispatch = useDispatch()
   const articleIds = useSelector(getArticleIds)
 
   useEffect(() => {
-    firestore()
-      .collection("articles")
-      .orderBy('createdAt', 'desc')
-      .withConverter(articleConverter)
-      .get()
-      .then(({ docs, query }) => {
-        const articles = docs.map((doc) => doc.data())
-        dispatch(actions.updateArticles(articles))
-      })
+    dispatch(actions.updateArticles(props.articles))
   }, [])
 
   return (
@@ -41,6 +40,24 @@ const IndexBoard: NextPage = () => {
       </section>
     </>
   )
+}
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const articles =
+    await firestore()
+      .collection("articles")
+      .orderBy('createdAt', 'desc')
+      .withConverter(articleConverter)
+      .get()
+      .then(({ docs }) => {
+        const articles = docs.map((doc) => doc.data())
+        return articles
+      })
+
+  return {
+    props: { articles: articles },
+    revalidate: env.IS_DEV ? 30 : 1,
+  }
 }
 
 export default IndexBoard
