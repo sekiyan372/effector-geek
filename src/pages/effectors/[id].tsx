@@ -22,7 +22,7 @@ const ShowEffector: NextPage<Props> = (props) => {
     <>
       <Head title="エフェクター" />
       <section className="m-12">
-        <LinkIndex />
+        <LinkIndex href="/effectors" />
         <Heading>
           { props.effector.brand }
           <span className="ml-5">{ props.effector.name }</span>
