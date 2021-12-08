@@ -23,7 +23,7 @@ const ShowBoard: NextPage<Props> = (props) => {
     <>
       <Head title={`${ props.article.artist }のエフェクターボード`} />
       <section className="m-12">
-        <LinkIndex href="/boards" />
+        <LinkIndex href="/boards" text="エフェクターボード一覧へ" />
         <Heading>
           { props.article.artist }
           { props.article.band && (

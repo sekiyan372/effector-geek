@@ -89,7 +89,7 @@ const NewEffector: NextPage = () => {
     <>
       <Head title="エフェクター登録" />
       <section className="m-12">
-        <LinkIndex />
+        <LinkIndex href="/effectors" text="エフェクター一覧へ" />
         <Heading>エフェクター登録</Heading>
         <p className="mb-10 text-red-400">* がついた項目は必須項目です。</p>
 
