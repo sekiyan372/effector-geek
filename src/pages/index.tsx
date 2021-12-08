@@ -1,4 +1,5 @@
 import { NextPage } from 'next'
+import Link from 'next/link'
 import { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
@@ -12,6 +13,11 @@ import Select from '~/components/Select'
 import { actions, getArticleIds, getEffectorIds, getEffectors } from '~/store'
 import { articleConverter, effectorConverter } from '~/utils/converter'
 import { firestore } from '~/utils/firebase'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+
+const ARTICLES_PER_FETCH: number = 6
+const EFFECTORS_PER_FETCH: number = 8
 
 type FormValues = {
   effectorId: string
@@ -57,6 +63,7 @@ const Index: NextPage = () => {
     firestore()
       .collection("articles")
       .orderBy('createdAt', 'desc')
+      .limit(ARTICLES_PER_FETCH)
       .withConverter(articleConverter)
       .get()
       .then(({ docs, query }) => {
@@ -67,6 +74,7 @@ const Index: NextPage = () => {
     firestore()
       .collection("effectors")
       .orderBy('createdAt', 'desc')
+      .limit(EFFECTORS_PER_FETCH)
       .withConverter(effectorConverter)
       .get()
       .then(({ docs, query }) => {
@@ -105,7 +113,14 @@ const Index: NextPage = () => {
         </div>
 
         <div className="m-12">
-          <Heading>エフェクターボード一覧</Heading>
+          <Heading>
+            <span className="">新着エフェクターボード</span>
+            <span className="float-right text-base text-blue-500">
+              <Link href="/boards">もっとみる</Link>
+              <span className="mx-1" />
+              <FontAwesomeIcon icon={ faChevronRight } />
+            </span>
+          </Heading>
           <ul className="m-3 flex flex-wrap">
             {articleIds.map((articleId) => (
               <li key={ articleId }>
@@ -119,7 +134,14 @@ const Index: NextPage = () => {
         </div>
 
         <div className="m-12">
-          <Heading>登録エフェクター一覧</Heading>
+          <Heading>
+            <span>新着登録エフェクター</span>
+            <span className="float-right text-base text-blue-500">
+              <Link href="/effectors">もっとみる</Link>
+              <span className="mx-1" />
+              <FontAwesomeIcon icon={ faChevronRight } />
+            </span>
+          </Heading>
           <ul className="m-3 flex flex-wrap">
             {effectorIds.map((effectorId) => (
               <li key={ effectorId }>
