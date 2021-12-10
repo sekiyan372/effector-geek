@@ -143,7 +143,7 @@ const IndexBoard: NextPage<Props> = (props) => {
               ))}
             </Select>
 
-            <SuccessButton className="w-15 rounded-md">検索</SuccessButton>
+            <SuccessButton className="w-60">検索</SuccessButton>
           </form>
         </div>
       </section>
