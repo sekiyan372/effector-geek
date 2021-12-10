@@ -9,47 +9,63 @@ import Heading from '~/components/Heading'
 import Label from '~/components/Label'
 import Select from '~/components/Select'
 import { actions, getArticleIds, getEffectors } from '~/store'
-import { articleConverter } from '~/utils/converter'
+import { articleConverter, effectorConverter } from '~/utils/converter'
 import { env } from '~/utils/env'
 import { firestore } from '~/utils/firebase'
-import { Article } from '~/types'
+import { Article, Effector } from '~/types'
 
 type Props = {
   articles?: Article[]
+  effectors?: Effector[]
   errorCode?: number
 }
 
 type FormValues = {
-  effectorId: string
+  effectorId?: string
+  brand?: string
+  genre?: string
 }
 
 const IndexBoard: NextPage<Props> = (props) => {
   const dispatch = useDispatch()
   const articleIds = useSelector(getArticleIds)
   const effectors = useSelector(getEffectors)
+  const brands = [...new Set(effectors.map((effector) => effector.brand))]
+  const genres = [...new Set(effectors.map((effector) => effector.type))]
 
   const { register ,handleSubmit, formState: { errors }} = useForm<FormValues>({
     defaultValues: {
       effectorId: null,
+      brand: null,
+      genre: null,
     }
   })
 
   useEffect(() => {
     dispatch(actions.updateArticles(props.articles))
+    dispatch(actions.updateEffectors(props.effectors))
   }, [])
 
   const SubmitSerch = (value: FormValues) => {
-    const serchArticles = props.articles.filter((article) =>
-      article.effectorIds.some((effectorId) => effectorId.id === value.effectorId)
-    )
-    dispatch(actions.updateArticles(serchArticles))
+    const serchAtEffector = value.effectorId ?
+      props.articles.filter((article) =>
+        article.effectorIds.some((effectorId) => effectorId.id === value.effectorId)
+      )
+      : props.articles
+    
+    const serchAtBrand = value.brand ?
+      serchAtEffector.filter((article) => {
+      })
+      : serchAtEffector
+
+    // dispatch(actions.updateArticles(serchArticles))
   }
 
   return (
     <>
       <Head title="エフェクターボード一覧" />
       <section>
-        <div className="m-12">
+        <div className="mt-12 mx-12">
           <form onSubmit={ handleSubmit(SubmitSerch) }>
             <Label htmlFor="serch" className="text-green-500">エフェクターで検索</Label>
             <div className="flex">
@@ -66,11 +82,61 @@ const IndexBoard: NextPage<Props> = (props) => {
               </Select>
               <SuccessButton className="w-15 rounded-md">検索</SuccessButton>
             </div>
-            {errors.effectorId && errors.effectorId.type === 'required' && (
+            {/* {errors.effectorId && errors.effectorId.type === 'required' && (
               <div role="alert" className="text-sm text-red-500">
                 選択してください
               </div>
-            )}
+            )} */}
+          </form>
+        </div>
+
+        <div className="mx-12">
+          <form onSubmit={ handleSubmit(SubmitSerch) }>
+            <Label htmlFor="serch" className="text-green-500">ブランドで検索</Label>
+            <div className="flex">
+              <Select
+                className="py-2 w-5/6"
+                id="serch"
+                {...register('brand', { required: true })}
+              >
+                {brands.map((brand, index) => (
+                  <option key={ index } value={ brand }>
+                    { brand }
+                  </option>
+                ))}
+              </Select>
+              <SuccessButton className="w-15 rounded-md">検索</SuccessButton>
+            </div>
+            {/* {errors.brand && errors.brand.type === 'required' && (
+              <div role="alert" className="text-sm text-red-500">
+                選択してください
+              </div>
+            )} */}
+          </form>
+        </div>
+
+        <div className="mx-12">
+          <form onSubmit={ handleSubmit(SubmitSerch) }>
+            <Label htmlFor="serch" className="text-green-500">ジャンルで検索</Label>
+            <div className="flex">
+              <Select
+                className="py-2 w-5/6"
+                id="serch"
+                {...register('genre', { required: true })}
+              >
+                {genres.map((genre, index) => (
+                  <option key={ index } value={ genre }>
+                    { genre }
+                  </option>
+                ))}
+              </Select>
+              <SuccessButton className="w-15 rounded-md">検索</SuccessButton>
+            </div>
+            {/* {errors.genre && errors.genre.type === 'required' && (
+              <div role="alert" className="text-sm text-red-500">
+                選択してください
+              </div>
+            )} */}
           </form>
         </div>
       </section>
@@ -103,8 +169,22 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         return articles
       })
 
+  const effectors =
+    await firestore()
+      .collection("effectors")
+      .orderBy('createdAt', 'desc')
+      .withConverter(effectorConverter)
+      .get()
+      .then(({ docs }) => {
+        const effectors = docs.map((doc) => doc.data())
+        return effectors
+      })
+
   return {
-    props: { articles: articles },
+    props: {
+      articles: articles,
+      effectors: effectors,
+    },
     revalidate: env.IS_DEV ? 30 : 1,
   }
 }
