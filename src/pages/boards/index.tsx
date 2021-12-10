@@ -108,7 +108,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const effectors =
     await firestore()
       .collection("effectors")
-      .orderBy('createdAt', 'desc')
+      .orderBy('brand', 'asc')
       .withConverter(effectorConverter)
       .get()
       .then(({ docs }) => {
