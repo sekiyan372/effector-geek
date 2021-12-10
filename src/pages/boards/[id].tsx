@@ -71,10 +71,17 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
     }
   }
 
-  const doc = await firestore().collection('articles').doc(id).withConverter(articleConverter).get()
+  const doc =
+    await firestore()
+      .collection('articles')
+      .doc(id)
+      .withConverter(articleConverter)
+      .get()
 
   return {
-    props: { article: doc.data() },
+    props: {
+      article: doc.data(),
+    },
     revalidate: env.IS_DEV ? 30 : 1,
   }
 }

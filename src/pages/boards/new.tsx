@@ -1,8 +1,8 @@
-import { NextPage } from 'next'
+import React, { useCallback, useState, ChangeEvent, useEffect } from 'react'
+import { NextPage, GetStaticProps } from 'next'
+import { useSelector, useDispatch } from 'react-redux'
 import { useRouter } from 'next/dist/client/router'
 import { useForm, useFieldArray } from 'react-hook-form'
-import React, { useCallback, useState, ChangeEvent } from 'react'
-import { useSelector } from 'react-redux'
 import Head from '~/components/Head'
 import Heading from '~/components/Heading'
 import InputFile from '~/components/InputFile'
@@ -13,8 +13,11 @@ import Select from '~/components/Select'
 import AddButton from '~/components/Button/AddButton'
 import DeleteButton from '~/components/Button/DeleteButton'
 import SuccessButton from '~/components/Button/SuccessButton'
+import { effectorConverter } from '~/utils/converter'
+import { env } from '~/utils/env'
 import { firestore, storage } from '~/utils/firebase'
-import { getEffectors } from '~/store'
+import { actions, getEffectors } from '~/store'
+import { Effector } from '~/types'
 
 const NO_IMAGE = require('../../../public/noimage.jpg')
 
@@ -26,8 +29,14 @@ type FormValues = {
   effectorIds: {id: string}[]
 }
 
-const NewBoard: NextPage = () => {
+type Props = {
+  effectors?: Effector[]
+  errorCode?: number
+}
+
+const NewBoard: NextPage<Props> = (props) => {
   const router = useRouter()
+  const dispatch = useDispatch()
   const effectors = useSelector(getEffectors)
   const [preview, setPreview] = useState<string>(NO_IMAGE)
   const [inEffectors, setInEffects] = useState<string[]>([])
@@ -49,6 +58,10 @@ const NewBoard: NextPage = () => {
     control,
     name: "effectorIds",
   })
+
+  useEffect(() => {
+    dispatch(actions.updateEffectors(props.effectors))
+  }, [])
 
   // エフェクターボード画像を選択した時の処理
   const handleChangeFile = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -312,6 +325,26 @@ const NewBoard: NextPage = () => {
       </section>
     </>
   )
+}
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const effectors =
+    await firestore()
+      .collection("effectors")
+      .orderBy('brand', 'asc')
+      .withConverter(effectorConverter)
+      .get()
+      .then(({ docs }) => {
+        const effectors = docs.map((doc) => doc.data())
+        return effectors
+      })
+
+  return {
+    props: {
+      effectors: effectors,
+    },
+    revalidate: env.IS_DEV ? 30 : 1,
+  }
 }
 
 export default NewBoard
