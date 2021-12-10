@@ -98,67 +98,63 @@ const IndexBoard: NextPage<Props> = (props) => {
   return (
     <>
       <Head title="エフェクターボード一覧" />
-      <section>
-        <div className="mt-12 mx-12">
-          <Label className="text-green-500">エフェクターボード検索</Label>
-          <form onSubmit={ handleSubmit(SubmitSerch) }>
-            <Select
-              className="py-2 w-full"
-              id="genre"
-              {...register('genre', { required: false })}
-              onChange={(e) => setGenre(e.target.value)}
-            >
-              <option value=''>ジャンルを選択</option>
-              {genres.map((genre, index) => (
-                <option key={ index } value={ genre }>
-                  { genre }
-                </option>
-              ))}
-            </Select>
+      <section className="m-6 md:m-12">
+        <Label className="text-green-500">エフェクターボード検索</Label>
+        <form onSubmit={ handleSubmit(SubmitSerch) }>
+          <Select
+            className="py-2 w-full"
+            id="genre"
+            {...register('genre', { required: false })}
+            onChange={(e) => setGenre(e.target.value)}
+          >
+            <option value=''>ジャンルを選択</option>
+            {genres.map((genre, index) => (
+              <option key={ index } value={ genre }>
+                { genre }
+              </option>
+            ))}
+          </Select>
 
-            <Select
-              className="py-2 w-full"
-              id="brand"
-              {...register('brand', { required: false })}
-              onChange={(e) => setBrand(e.target.value)}
-            >
-              <option value=''>ブランドを選択</option>
-              {brands.map((brand, index) => (
-                <option key={ index } value={ brand }>
-                  { brand }
-                </option>
-              ))}
-            </Select>
+          <Select
+            className="py-2 w-full"
+            id="brand"
+            {...register('brand', { required: false })}
+            onChange={(e) => setBrand(e.target.value)}
+          >
+            <option value=''>ブランドを選択</option>
+            {brands.map((brand, index) => (
+              <option key={ index } value={ brand }>
+                { brand }
+              </option>
+            ))}
+          </Select>
 
-            <Select
-              className="py-2 w-full"
-              id="effector"
-              {...register('effectorId', { required: false })}
-            >
-              <option value=''>エフェクターを選択</option>
-              {effectorOption?.map((effector) => (
-                <option key={ effector.id } value={ effector.id }>
-                  { effector.brand } { effector.name }
-                </option>
-              ))}
-            </Select>
+          <Select
+            className="py-2 w-full"
+            id="effector"
+            {...register('effectorId', { required: false })}
+          >
+            <option value=''>エフェクターを選択</option>
+            {effectorOption?.map((effector) => (
+              <option key={ effector.id } value={ effector.id }>
+                { effector.brand } { effector.name }
+              </option>
+            ))}
+          </Select>
 
-            <SuccessButton className="w-60">検索</SuccessButton>
-          </form>
-        </div>
+          <SuccessButton className="w-60">検索</SuccessButton>
+        </form>
       </section>
 
-      <section>
-        <div className="m-12">
-          <Heading>エフェクターボード一覧</Heading>
-          <ul className="m-3 flex flex-wrap">
-            {articleIds.map((articleId) => (
-              <li key={ articleId }>
-                <ArticleCard articleId={ articleId } />
-              </li>
-            ))}
-          </ul>
-        </div>
+      <section className="m-6 md:m-12">
+        <Heading>エフェクターボード一覧</Heading>
+        <ul className="m-3 flex flex-wrap">
+          {articleIds.map((articleId) => (
+            <li key={ articleId }>
+              <ArticleCard articleId={ articleId } />
+            </li>
+          ))}
+        </ul>
       </section>
     </>
   )

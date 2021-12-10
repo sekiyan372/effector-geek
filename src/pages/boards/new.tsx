@@ -203,7 +203,7 @@ const NewBoard: NextPage<Props> = (props) => {
     <>
       <Head title="エフェクターボード投稿" />
       <section>
-        <div className="m-12">
+        <div className="m-6 md:m-12">
           <LinkIndex href="/boards" text="エフェクターボード一覧へ" />
           <Heading>エフェクターボード投稿</Heading>
           <p className="mb-10 text-red-400">* がついた項目は必須項目です。</p>

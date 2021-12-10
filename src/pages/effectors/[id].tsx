@@ -21,7 +21,7 @@ const ShowEffector: NextPage<Props> = (props) => {
   return(
     <>
       <Head title="エフェクター" />
-      <section className="m-12">
+      <section className="m-6 md:m-12">
         <LinkIndex href="/effectors" text="エフェクター一覧へ" />
         <Heading>
           { props.effector.brand }

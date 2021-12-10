@@ -63,52 +63,48 @@ const IndexEffector: NextPage<Props> = (props) => {
   return (
     <>
       <Head title="エフェクター一覧" />
-      <section>
-        <div className="mt-12 mx-12">
-          <Label className="text-green-500">エフェクター検索</Label>
-          <form onSubmit={ handleSubmit(SubmitSerch) }>
-            <Select
-              className="py-2 w-full"
-              id="genre"
-              {...register('genre', { required: false })}
-            >
-              <option value=''>ジャンルを選択</option>
-              {genres.map((genre, index) => (
-                <option key={ index } value={ genre }>
-                  { genre }
-                </option>
-              ))}
-            </Select>
+      <section className="m-6 md:m-12">
+        <Label className="text-green-500">エフェクター検索</Label>
+        <form onSubmit={ handleSubmit(SubmitSerch) }>
+          <Select
+            className="py-2 w-full"
+            id="genre"
+            {...register('genre', { required: false })}
+          >
+            <option value=''>ジャンルを選択</option>
+            {genres.map((genre, index) => (
+              <option key={ index } value={ genre }>
+                { genre }
+              </option>
+            ))}
+          </Select>
 
-            <Select
-              className="py-2 w-full"
-              id="brand"
-              {...register('brand', { required: false })}
-            >
-              <option value=''>ブランドを選択</option>
-              {brands.map((brand, index) => (
-                <option key={ index } value={ brand }>
-                  { brand }
-                </option>
-              ))}
-            </Select>
+          <Select
+            className="py-2 w-full"
+            id="brand"
+            {...register('brand', { required: false })}
+          >
+            <option value=''>ブランドを選択</option>
+            {brands.map((brand, index) => (
+              <option key={ index } value={ brand }>
+                { brand }
+              </option>
+            ))}
+          </Select>
 
-            <SuccessButton className="w-60">検索</SuccessButton>
-          </form>
-        </div>
+          <SuccessButton className="w-60">検索</SuccessButton>
+        </form>
       </section>
 
-      <section>
-        <div className="m-12">
-          <Heading>エフェクター一覧</Heading>
-          <ul className="m-3 flex flex-wrap">
-            {effectorIds.map((effectorId) => (
-                <li key={ effectorId }>
-                  <EffectorCard effectorId={ effectorId } />
-                </li>
-            ))}
-          </ul>
-        </div>
+      <section className="m-6 md:m-12">
+        <Heading>エフェクター一覧</Heading>
+        <ul className="m-3 flex flex-wrap">
+          {effectorIds.map((effectorId) => (
+              <li key={ effectorId }>
+                <EffectorCard effectorId={ effectorId } />
+              </li>
+          ))}
+        </ul>
       </section>
     </>
   )

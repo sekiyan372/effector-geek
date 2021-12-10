@@ -10,7 +10,7 @@ const InputFile: ForwardRefRenderFunction<HTMLInputElement ,Props> = (
     ref={ref}
     type="file"
     className={ClassNames(
-      'm-5',
+      'md:m-5 my-3 w-full',
       className
     )}
     {...props}

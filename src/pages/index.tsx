@@ -47,10 +47,10 @@ const Index: NextPage = () => {
     <>
       <Head title="トップページ" />
       <section>
-        <div className="m-12">
+        <div className="m-6 md:m-12">
           <Heading>
-            <span className="">新着エフェクターボード</span>
-            <span className="float-right text-base text-blue-500">
+            <span>新着エフェクターボード</span>
+            <span className="sm:float-right block text-right text-base text-blue-500">
               <Link href="/boards">もっとみる</Link>
               <span className="mx-1" />
               <FontAwesomeIcon icon={ faChevronRight } />
@@ -68,10 +68,10 @@ const Index: NextPage = () => {
           </ul>
         </div>
 
-        <div className="m-12">
+        <div className="m-6 md:m-12">
           <Heading>
             <span>新着登録エフェクター</span>
-            <span className="float-right text-base text-blue-500">
+            <span className="sm:float-right block text-right text-base text-blue-500">
               <Link href="/effectors">もっとみる</Link>
               <span className="mx-1" />
               <FontAwesomeIcon icon={ faChevronRight } />
