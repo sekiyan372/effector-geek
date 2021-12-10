@@ -35,7 +35,7 @@ const IndexBoard: NextPage<Props> = (props) => {
   const [genre, setGenre] = useState<string>('')
   const [brand, setBrand] = useState<string>('')
   
-  const { register ,handleSubmit, formState: { errors }} = useForm<FormValues>({
+  const { register ,handleSubmit} = useForm<FormValues>({
     defaultValues: {
       effectorId: null,
       brand: null,
@@ -117,11 +117,6 @@ const IndexBoard: NextPage<Props> = (props) => {
                 ))}
               </Select>
             </div>
-            {/* {errors.genre && errors.genre.type === 'required' && (
-              <div role="alert" className="text-sm text-red-500">
-                選択してください
-              </div>
-            )} */}
 
             <div className="flex">
               <Select
@@ -138,11 +133,6 @@ const IndexBoard: NextPage<Props> = (props) => {
                 ))}
               </Select>
             </div>
-            {/* {errors.brand && errors.brand.type === 'required' && (
-              <div role="alert" className="text-sm text-red-500">
-                選択してください
-              </div>
-            )} */}
 
             <div className="flex">
               <Select
@@ -158,11 +148,6 @@ const IndexBoard: NextPage<Props> = (props) => {
                 ))}
               </Select>
             </div>
-            {/* {errors.effectorId && errors.effectorId.type === 'required' && (
-              <div role="alert" className="text-sm text-red-500">
-              選択してください
-              </div>
-            )} */}
 
             <SuccessButton className="w-15 rounded-md">検索</SuccessButton>
           </form>
