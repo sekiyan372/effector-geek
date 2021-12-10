@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { NextPage, GetStaticProps } from 'next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
@@ -32,7 +32,9 @@ const IndexBoard: NextPage<Props> = (props) => {
   const effectors = useSelector(getEffectors)
   const brands = [...new Set(effectors.map((effector) => effector.brand))]
   const genres = [...new Set(effectors.map((effector) => effector.type))]
-
+  const [genre, setGenre] = useState<string>('')
+  const [brand, setBrand] = useState<string>('')
+  
   const { register ,handleSubmit, formState: { errors }} = useForm<FormValues>({
     defaultValues: {
       effectorId: null,
@@ -41,39 +43,73 @@ const IndexBoard: NextPage<Props> = (props) => {
     }
   })
 
+  const effectorOption: Effector[] = useMemo(() => {
+    if (genre !== '' && brand !== '') {
+      return effectors.filter((effector) => effector.type === genre && effector.brand === brand)
+    } else if (genre !== '' && brand === '') {
+      return effectors.filter((effector) => effector.type === genre)
+    } else if (brand !== '' && genre === '') {
+      return effectors.filter((effector) => effector.brand === brand)
+    }
+    return effectors
+  }, [genre, brand])
+
+  const serchArticles = (searchedEffectors: string[]): Article[] => {
+    return props.articles.filter((article) =>
+      article.effectorIds.some((effectorId) => searchedEffectors.includes(effectorId.id))
+    )
+  }
+
+  const SubmitSerch = (value: FormValues) => {
+    if(value.effectorId) {
+      const searchingArticles = props.articles.filter((article) =>
+        article.effectorIds.some((effectorId) => effectorId.id === value.effectorId)
+      )
+      dispatch(actions.updateArticles(searchingArticles))
+      return
+    }
+
+    if (value.genre && value.brand) {
+      const serchingbyBoth = effectors
+        .filter((effector) => effector.type === value.genre && effector.brand === value.brand)
+        .map((effector) => effector.id)
+      dispatch(actions.updateArticles(serchArticles(serchingbyBoth)))
+      return
+    } else if (value.genre && !value.brand) {
+      const serchingByGenre = effectors
+        .filter((effector) => effector.type === value.genre)
+        .map((effector) => effector.id)
+      dispatch(actions.updateArticles(serchArticles(serchingByGenre)))
+      return
+    } else if (!value.genre && value.brand) {
+      const serchByBrand = effectors
+        .filter((effector) => effector.brand === value.brand)
+        .map((effector) => effector.id)
+      dispatch(actions.updateArticles(serchArticles(serchByBrand)))
+      return
+    }
+  }
+
   useEffect(() => {
     dispatch(actions.updateArticles(props.articles))
     dispatch(actions.updateEffectors(props.effectors))
   }, [])
-
-  const SubmitSerch = (value: FormValues) => {
-    const serchAtEffector = value.effectorId ?
-      props.articles.filter((article) =>
-        article.effectorIds.some((effectorId) => effectorId.id === value.effectorId)
-      )
-      : props.articles
-    
-    const serchAtBrand = value.brand ?
-      serchAtEffector.filter((article) => {
-      })
-      : serchAtEffector
-
-    // dispatch(actions.updateArticles(serchArticles))
-  }
 
   return (
     <>
       <Head title="エフェクターボード一覧" />
       <section>
         <div className="mt-12 mx-12">
+          <Label className="text-green-500">エフェクターボード検索</Label>
           <form onSubmit={ handleSubmit(SubmitSerch) }>
-            <Label htmlFor="serch" className="text-green-500">ジャンルを選択</Label>
             <div className="flex">
               <Select
                 className="py-2 w-full"
-                id="serch"
-                {...register('genre', { required: true })}
+                id="genre"
+                {...register('genre', { required: false })}
+                onChange={(e) => setGenre(e.target.value)}
               >
+                <option value=''>ジャンルを選択</option>
                 {genres.map((genre, index) => (
                   <option key={ index } value={ genre }>
                     { genre }
@@ -87,13 +123,14 @@ const IndexBoard: NextPage<Props> = (props) => {
               </div>
             )} */}
 
-            <Label htmlFor="serch" className="text-green-500">ブランドを選択</Label>
             <div className="flex">
               <Select
                 className="py-2 w-full"
-                id="serch"
-                {...register('brand', { required: true })}
+                id="brand"
+                {...register('brand', { required: false })}
+                onChange={(e) => setBrand(e.target.value)}
               >
+                <option value=''>ブランドを選択</option>
                 {brands.map((brand, index) => (
                   <option key={ index } value={ brand }>
                     { brand }
@@ -107,14 +144,14 @@ const IndexBoard: NextPage<Props> = (props) => {
               </div>
             )} */}
 
-            <Label htmlFor="serch" className="text-green-500">エフェクターを選択</Label>
             <div className="flex">
               <Select
                 className="py-2 w-full"
-                id="serch"
-                {...register('effectorId', { required: true })}
+                id="effector"
+                {...register('effectorId', { required: false })}
               >
-                {effectors?.map((effector) => (
+                <option value=''>エフェクターを選択</option>
+                {effectorOption?.map((effector) => (
                   <option key={ effector.id } value={ effector.id }>
                     { effector.brand } { effector.name }
                   </option>
