@@ -34,7 +34,7 @@ const IndexBoard: NextPage<Props> = (props) => {
   const genres = [...new Set(effectors.map((effector) => effector.type))]
   const [genre, setGenre] = useState<string>('')
   const [brand, setBrand] = useState<string>('')
-  
+
   const { register ,handleSubmit} = useForm<FormValues>({
     defaultValues: {
       effectorId: null,
@@ -54,9 +54,9 @@ const IndexBoard: NextPage<Props> = (props) => {
     return effectors
   }, [genre, brand])
 
-  const serchArticles = (searchedEffectors: string[]): Article[] => {
+  const serchArticles = (searchedEffectorIds: string[]): Article[] => {
     return props.articles.filter((article) =>
-      article.effectorIds.some((effectorId) => searchedEffectors.includes(effectorId.id))
+      article.effectorIds.some((effectorId) => searchedEffectorIds.includes(effectorId.id))
     )
   }
 
@@ -102,52 +102,46 @@ const IndexBoard: NextPage<Props> = (props) => {
         <div className="mt-12 mx-12">
           <Label className="text-green-500">エフェクターボード検索</Label>
           <form onSubmit={ handleSubmit(SubmitSerch) }>
-            <div className="flex">
-              <Select
-                className="py-2 w-full"
-                id="genre"
-                {...register('genre', { required: false })}
-                onChange={(e) => setGenre(e.target.value)}
-              >
-                <option value=''>ジャンルを選択</option>
-                {genres.map((genre, index) => (
-                  <option key={ index } value={ genre }>
-                    { genre }
-                  </option>
-                ))}
-              </Select>
-            </div>
+            <Select
+              className="py-2 w-full"
+              id="genre"
+              {...register('genre', { required: false })}
+              onChange={(e) => setGenre(e.target.value)}
+            >
+              <option value=''>ジャンルを選択</option>
+              {genres.map((genre, index) => (
+                <option key={ index } value={ genre }>
+                  { genre }
+                </option>
+              ))}
+            </Select>
 
-            <div className="flex">
-              <Select
-                className="py-2 w-full"
-                id="brand"
-                {...register('brand', { required: false })}
-                onChange={(e) => setBrand(e.target.value)}
-              >
-                <option value=''>ブランドを選択</option>
-                {brands.map((brand, index) => (
-                  <option key={ index } value={ brand }>
-                    { brand }
-                  </option>
-                ))}
-              </Select>
-            </div>
+            <Select
+              className="py-2 w-full"
+              id="brand"
+              {...register('brand', { required: false })}
+              onChange={(e) => setBrand(e.target.value)}
+            >
+              <option value=''>ブランドを選択</option>
+              {brands.map((brand, index) => (
+                <option key={ index } value={ brand }>
+                  { brand }
+                </option>
+              ))}
+            </Select>
 
-            <div className="flex">
-              <Select
-                className="py-2 w-full"
-                id="effector"
-                {...register('effectorId', { required: false })}
-              >
-                <option value=''>エフェクターを選択</option>
-                {effectorOption?.map((effector) => (
-                  <option key={ effector.id } value={ effector.id }>
-                    { effector.brand } { effector.name }
-                  </option>
-                ))}
-              </Select>
-            </div>
+            <Select
+              className="py-2 w-full"
+              id="effector"
+              {...register('effectorId', { required: false })}
+            >
+              <option value=''>エフェクターを選択</option>
+              {effectorOption?.map((effector) => (
+                <option key={ effector.id } value={ effector.id }>
+                  { effector.brand } { effector.name }
+                </option>
+              ))}
+            </Select>
 
             <SuccessButton className="w-15 rounded-md">検索</SuccessButton>
           </form>
