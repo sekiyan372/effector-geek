@@ -10,6 +10,7 @@ import Label from '~/components/Label'
 import LinkIndex from '~/components/LinkIndex'
 import Select from '~/components/Select'
 import SuccessButton from '~/components/Button/SuccessButton'
+import { Genres } from '~/utils/data'
 import { firestore, storage } from '~/utils/firebase'
 
 const NO_IMAGE = require('../../../public/noimage.jpg')
@@ -160,30 +161,9 @@ const NewEffector: NextPage = () => {
               id="type"
               {...register('type', { required: true })}
             >
-              <option value="OverDrive">Over Drive</option>
-              <option value="Distortion">Distortion</option>
-              <option value="Fuzz">Fuzz</option>
-              <option value="Booster">Booster</option>
-              <option value="PreAmp">Pre Amp</option>
-              <option value="Chorus">Chorus</option>
-              <option value="Flanger">Flanger</option>
-              <option value="Phaser">Phaser</option>
-              <option value="Tremolo">Tremolo</option>
-              <option value="Reverb">Reverb</option>
-              <option value="Delay">Delay</option>
-              <option value="Looper">Looper</option>
-              <option value="Compressor">Compressor</option>
-              <option value="Limiter">Limiter</option>
-              <option value="Wah">Wah</option>
-              <option value="Octaver">Octaver</option>
-              <option value="PitchShifter">Pitch Shifter</option>
-              <option value="Equalizer">Equalizer</option>
-              <option value="LineSelector">Line Selector</option>
-              <option value="Tuner">Tuner</option>
-              <option value="Switcher">Switcher</option>
-              <option value="PowerSupply">Power Supply</option>
-              <option value="Cable">Cable</option>
-              <option value="other">その他</option>
+              {Genres.map((genre, index) => (
+                <option key={index} value={genre}>{genre}</option>
+              ))}
             </Select>
             {errors.type && errors.type.type === 'required' && (
               <div role="alert" className="text-sm text-red-500">

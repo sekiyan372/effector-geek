@@ -10,6 +10,7 @@ import Label from '~/components/Label'
 import Select from '~/components/Select'
 import { actions, getArticleIds, getEffectors } from '~/store'
 import { articleConverter, effectorConverter } from '~/utils/converter'
+import { Genres } from '~/utils/data'
 import { env } from '~/utils/env'
 import { firestore } from '~/utils/firebase'
 import { Article, Effector } from '~/types'
@@ -31,7 +32,6 @@ const IndexBoard: NextPage<Props> = (props) => {
   const articleIds = useSelector(getArticleIds)
   const effectors = useSelector(getEffectors)
   const brands = [...new Set(effectors.map((effector) => effector.brand))]
-  const genres = [...new Set(effectors.map((effector) => effector.type))]
   const [genre, setGenre] = useState<string>('')
   const [brand, setBrand] = useState<string>('')
 
@@ -108,10 +108,8 @@ const IndexBoard: NextPage<Props> = (props) => {
             onChange={(e) => setGenre(e.target.value)}
           >
             <option value=''>ジャンルを選択</option>
-            {genres.map((genre, index) => (
-              <option key={ index } value={ genre }>
-                { genre }
-              </option>
+            {Genres.map((genre, index) => (
+              <option key={ index } value={ genre }>{ genre }</option>
             ))}
           </Select>
 

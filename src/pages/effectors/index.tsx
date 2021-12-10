@@ -10,6 +10,7 @@ import Label from '~/components/Label'
 import Select from '~/components/Select'
 import { actions, getEffectorIds } from '~/store'
 import { effectorConverter } from '~/utils/converter'
+import { Genres } from '~/utils/data'
 import { env } from '~/utils/env'
 import { firestore } from '~/utils/firebase'
 import { Effector } from '~/types'
@@ -28,7 +29,6 @@ const IndexEffector: NextPage<Props> = (props) => {
   const dispatch = useDispatch()
   const effectorIds = useSelector(getEffectorIds)
   const brands = [...new Set(props.effectors.map((effector) => effector.brand))]
-  const genres = [...new Set(props.effectors.map((effector) => effector.type))]
 
   const { register ,handleSubmit} = useForm<FormValues>({
     defaultValues: {
@@ -72,7 +72,7 @@ const IndexEffector: NextPage<Props> = (props) => {
             {...register('genre', { required: false })}
           >
             <option value=''>ジャンルを選択</option>
-            {genres.map((genre, index) => (
+            {Genres.map((genre, index) => (
               <option key={ index } value={ genre }>
                 { genre }
               </option>
