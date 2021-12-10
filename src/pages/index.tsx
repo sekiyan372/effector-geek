@@ -27,7 +27,7 @@ const Index: NextPage = () => {
       .limit(ARTICLES_PER_FETCH)
       .withConverter(articleConverter)
       .get()
-      .then(({ docs, query }) => {
+      .then(({ docs }) => {
         const articles = docs.map((doc) => doc.data())
         dispatch(actions.updateArticles(articles))
       })
@@ -35,10 +35,9 @@ const Index: NextPage = () => {
     firestore()
       .collection("effectors")
       .orderBy('createdAt', 'desc')
-      .limit(EFFECTORS_PER_FETCH)
       .withConverter(effectorConverter)
       .get()
-      .then(({ docs, query }) => {
+      .then(({ docs}) => {
         const effectors = docs.map((doc) => doc.data())
         dispatch(actions.updateEffectors(effectors))
       })
@@ -79,11 +78,15 @@ const Index: NextPage = () => {
             </span>
           </Heading>
           <ul className="m-3 flex flex-wrap">
-            {effectorIds.map((effectorId) => (
-              <li key={ effectorId }>
-                <EffectorCard effectorId={ effectorId } />
-              </li>
-            ))}
+            {effectorIds.map((effectorId, index) => {
+              if(index < EFFECTORS_PER_FETCH) {
+                return(
+                <li key={ effectorId }>
+                  <EffectorCard effectorId={ effectorId } />
+                </li>
+                )
+              }
+            })}
           </ul>
         </div>
       </section>
