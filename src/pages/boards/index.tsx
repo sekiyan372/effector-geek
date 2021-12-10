@@ -9,13 +9,14 @@ import Heading from '~/components/Heading'
 import Label from '~/components/Label'
 import Select from '~/components/Select'
 import { actions, getArticleIds, getEffectors } from '~/store'
-import { articleConverter } from '~/utils/converter'
+import { articleConverter, effectorConverter } from '~/utils/converter'
 import { env } from '~/utils/env'
 import { firestore } from '~/utils/firebase'
-import { Article } from '~/types'
+import { Article, Effector } from '~/types'
 
 type Props = {
   articles?: Article[]
+  effectors?: Effector[]
   errorCode?: number
 }
 
@@ -36,6 +37,7 @@ const IndexBoard: NextPage<Props> = (props) => {
 
   useEffect(() => {
     dispatch(actions.updateArticles(props.articles))
+    dispatch(actions.updateEffectors(props.effectors))
   }, [])
 
   const SubmitSerch = (value: FormValues) => {
@@ -103,8 +105,22 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         return articles
       })
 
+  const effectors =
+    await firestore()
+      .collection("effectors")
+      .orderBy('createdAt', 'desc')
+      .withConverter(effectorConverter)
+      .get()
+      .then(({ docs }) => {
+        const effectors = docs.map((doc) => doc.data())
+        return effectors
+      })
+
   return {
-    props: { articles: articles },
+    props: {
+      articles: articles,
+      effectors: effectors,
+    },
     revalidate: env.IS_DEV ? 30 : 1,
   }
 }
