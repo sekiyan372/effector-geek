@@ -67,60 +67,10 @@ const IndexBoard: NextPage<Props> = (props) => {
       <section>
         <div className="mt-12 mx-12">
           <form onSubmit={ handleSubmit(SubmitSerch) }>
-            <Label htmlFor="serch" className="text-green-500">エフェクターで検索</Label>
+            <Label htmlFor="serch" className="text-green-500">ジャンルを選択</Label>
             <div className="flex">
               <Select
-                className="py-2 w-5/6"
-                id="serch"
-                {...register('effectorId', { required: true })}
-              >
-                {effectors?.map((effector) => (
-                  <option key={ effector.id } value={ effector.id }>
-                    { effector.brand } { effector.name }
-                  </option>
-                ))}
-              </Select>
-              <SuccessButton className="w-15 rounded-md">検索</SuccessButton>
-            </div>
-            {/* {errors.effectorId && errors.effectorId.type === 'required' && (
-              <div role="alert" className="text-sm text-red-500">
-                選択してください
-              </div>
-            )} */}
-          </form>
-        </div>
-
-        <div className="mx-12">
-          <form onSubmit={ handleSubmit(SubmitSerch) }>
-            <Label htmlFor="serch" className="text-green-500">ブランドで検索</Label>
-            <div className="flex">
-              <Select
-                className="py-2 w-5/6"
-                id="serch"
-                {...register('brand', { required: true })}
-              >
-                {brands.map((brand, index) => (
-                  <option key={ index } value={ brand }>
-                    { brand }
-                  </option>
-                ))}
-              </Select>
-              <SuccessButton className="w-15 rounded-md">検索</SuccessButton>
-            </div>
-            {/* {errors.brand && errors.brand.type === 'required' && (
-              <div role="alert" className="text-sm text-red-500">
-                選択してください
-              </div>
-            )} */}
-          </form>
-        </div>
-
-        <div className="mx-12">
-          <form onSubmit={ handleSubmit(SubmitSerch) }>
-            <Label htmlFor="serch" className="text-green-500">ジャンルで検索</Label>
-            <div className="flex">
-              <Select
-                className="py-2 w-5/6"
+                className="py-2 w-full"
                 id="serch"
                 {...register('genre', { required: true })}
               >
@@ -130,13 +80,54 @@ const IndexBoard: NextPage<Props> = (props) => {
                   </option>
                 ))}
               </Select>
-              <SuccessButton className="w-15 rounded-md">検索</SuccessButton>
             </div>
             {/* {errors.genre && errors.genre.type === 'required' && (
               <div role="alert" className="text-sm text-red-500">
                 選択してください
               </div>
             )} */}
+
+            <Label htmlFor="serch" className="text-green-500">ブランドを選択</Label>
+            <div className="flex">
+              <Select
+                className="py-2 w-full"
+                id="serch"
+                {...register('brand', { required: true })}
+              >
+                {brands.map((brand, index) => (
+                  <option key={ index } value={ brand }>
+                    { brand }
+                  </option>
+                ))}
+              </Select>
+            </div>
+            {/* {errors.brand && errors.brand.type === 'required' && (
+              <div role="alert" className="text-sm text-red-500">
+                選択してください
+              </div>
+            )} */}
+
+            <Label htmlFor="serch" className="text-green-500">エフェクターを選択</Label>
+            <div className="flex">
+              <Select
+                className="py-2 w-full"
+                id="serch"
+                {...register('effectorId', { required: true })}
+              >
+                {effectors?.map((effector) => (
+                  <option key={ effector.id } value={ effector.id }>
+                    { effector.brand } { effector.name }
+                  </option>
+                ))}
+              </Select>
+            </div>
+            {/* {errors.effectorId && errors.effectorId.type === 'required' && (
+              <div role="alert" className="text-sm text-red-500">
+              選択してください
+              </div>
+            )} */}
+
+            <SuccessButton className="w-15 rounded-md">検索</SuccessButton>
           </form>
         </div>
       </section>
