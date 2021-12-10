@@ -87,10 +87,10 @@ const NewBoard: NextPage<Props> = (props) => {
     }
 
     // 画像の容量が大きすぎる時
-    if(files[0].size >= 1048576) {
+    if(files[0].size >= 10485760) {
       setError('image', {
         type: 'manual',
-        message: '1MB以下のファイルをアップロードしてください',
+        message: '10MB以下のファイルをアップロードしてください',
       })
       setPreview(NO_IMAGE)
       return

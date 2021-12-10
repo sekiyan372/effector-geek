@@ -75,7 +75,7 @@ const NewEffector: NextPage = () => {
       return
     }
 
-    if(files[0].size > 1048576) {
+    if(files[0].size > 10485760) {
       setError('image', {
         type: 'manual',
         message: '10MB以下のファイルをアップロードしてください',
