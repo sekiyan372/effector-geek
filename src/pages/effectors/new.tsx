@@ -35,8 +35,9 @@ const NewEffector: NextPage = () => {
   })
 
   const submitArticle = useCallback(async (value: FormValues) => {
+    console.log(value)
     let imageUrl = ''
-    if(value.image[0]) {
+    if(value.image && value.image[0]) {
       // 画像をfirebase storageへ保存
       const imagePath = `effector/${value.image[0].name}`
       await storage().ref().child(imagePath).put(value.image[0])
