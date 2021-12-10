@@ -17,6 +17,7 @@ export const Genres: string[] = [
   "Octaver",
   "PitchShifter",
   "Equalizer",
+  "MultiEffects",
   "LineSelector",
   "Tuner",
   "Switcher",
